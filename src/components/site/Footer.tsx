@@ -22,7 +22,7 @@ export function Footer() {
     <footer className="relative overflow-hidden bg-night text-white">
       <div className="absolute inset-0 gradient-mesh opacity-40 pointer-events-none" aria-hidden />
       <div className="container-x relative pt-16 pb-8">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1.1fr_1fr_1.4fr]">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_0.7fr_1.1fr_1.2fr]">
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-start gap-2.5">
@@ -122,7 +122,7 @@ export function Footer() {
         </div>
 
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-[11px] text-white/45 md:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-[11px] text-white/45 md:flex-row md:pr-24">
           <p>© {new Date().getFullYear()} iSmart Digital Technology. All Rights Reserved.</p>
           <p className="flex items-center gap-4">
             <Link to="/resources" className="hover:text-white transition-colors">Privacy Policy</Link>
