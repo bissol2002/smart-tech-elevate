@@ -1,60 +1,62 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
-import { solutions } from "@/content/solutions";
+import { ArrowRight } from "lucide-react";
+import productCctv from "@/assets/product-cctv.jpg";
+import productNetwork from "@/assets/product-network.jpg";
+import accessControl from "@/assets/access-control.jpg";
+import fiberOptic from "@/assets/fiber-optic.jpg";
+import controlRoom from "@/assets/control-room.jpg";
+import dataCentre from "@/assets/data-centre.jpg";
+
+const cards = [
+  { title: "CCTV Surveillance", body: "High-definition IP cameras for complete security monitoring.", image: productCctv },
+  { title: "Access Control", body: "Biometric, card & facial recognition access control systems.", image: accessControl },
+  { title: "Time Attendance", body: "Smart attendance systems with advanced reporting features.", image: dataCentre },
+  { title: "Networking", body: "Reliable networking solutions for businesses of all sizes.", image: productNetwork },
+  { title: "Structured Cabling", body: "Professional data cabling for optimal performance.", image: fiberOptic },
+  { title: "Technical Support", body: "Maintenance, troubleshooting & dedicated support services.", image: controlRoom },
+];
 
 export function Solutions() {
   return (
-    <section className="relative py-24 md:py-32">
+    <section className="bg-background pb-16">
       <div className="container-x">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-          <div className="max-w-xl">
-            <div className="text-xs font-bold uppercase tracking-[0.25em] text-primary">What we do</div>
-            <h2 className="mt-3 font-display text-3xl md:text-5xl font-extrabold tracking-tight text-ink">
-              End-to-end security &<br />connectivity solutions
-            </h2>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Our Solutions</h2>
+            <p className="mt-2 text-sm text-ink-soft">Comprehensive technology solutions tailored to your business needs.</p>
           </div>
-          <p className="max-w-md text-ink-soft leading-relaxed">
-            From single-camera installs to enterprise-wide surveillance and multi-site networks — we design, deploy and maintain systems that just work.
-          </p>
+          <Link
+            to="/solutions"
+            className="inline-flex items-center gap-2 rounded-md border border-primary px-4 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition"
+          >
+            View All Solutions <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {solutions.map((s, idx) => {
-            const Icon = s.icon;
-            const featured = idx === 0;
-            return (
-              <Link
-                key={s.slug}
-                to="/solutions"
-                className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-6 hover-lift shadow-card ${
-                  featured ? "sm:col-span-2 sm:row-span-2" : ""
-                }`}
-              >
-                <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-primary/8 blur-2xl group-hover:bg-primary/20 transition-colors" />
-                <div className="relative flex items-start justify-between">
-                  <div className="grid h-12 w-12 place-items-center rounded-xl gradient-primary text-white shadow-glow">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <ArrowUpRight className="h-5 w-5 text-ink-soft group-hover:text-primary group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition" />
-                </div>
-                <h3 className={`relative mt-6 font-display font-bold text-ink ${featured ? "text-2xl md:text-3xl" : "text-lg"}`}>
-                  {s.title}
-                </h3>
-                <p className={`relative mt-2 text-ink-soft leading-relaxed ${featured ? "text-base" : "text-sm"}`}>
-                  {featured ? s.description : s.short}
-                </p>
-                {featured && (
-                  <ul className="relative mt-4 flex flex-wrap gap-2">
-                    {s.features.map((f) => (
-                      <li key={f} className="inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </Link>
-            );
-          })}
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {cards.map((c) => (
+            <Link
+              key={c.title}
+              to="/solutions"
+              className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-card hover-lift"
+            >
+              <div className="aspect-4/3 overflow-hidden bg-muted">
+                <img
+                  src={c.image}
+                  alt={c.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="flex flex-1 flex-col p-4">
+                <h3 className="font-display text-sm font-bold text-ink">{c.title}</h3>
+                <p className="mt-1.5 flex-1 text-xs leading-relaxed text-ink-soft">{c.body}</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">
+                  Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
