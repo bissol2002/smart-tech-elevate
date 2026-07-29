@@ -1,99 +1,104 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ChevronRight, ShieldCheck } from "lucide-react";
-import { nav, site } from "@/content/site";
+import { Menu, X, ChevronDown, Phone, ShieldCheck } from "lucide-react";
+import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
+
+const mainNav = [
+  { label: "Home", to: "/" },
+  { label: "About Us", to: "/about" },
+  { label: "Solutions", to: "/solutions", caret: true },
+  { label: "Brands", to: "/brands" },
+  { label: "Projects", to: "/projects" },
+  { label: "Why Choose Us", to: "/industries" },
+  { label: "Contact", to: "/contact" },
+];
+
+function Logo() {
+  return (
+    <Link to="/" className="flex items-start gap-2.5 shrink-0 group">
+      <span className="grid h-10 w-10 place-items-center rounded-lg gradient-primary shadow-glow transition-transform group-hover:scale-105">
+        <ShieldCheck className="h-5 w-5 text-white" />
+      </span>
+      <span className="flex flex-col leading-tight">
+        <span className="font-display text-xl font-extrabold tracking-tight text-ink">
+          i<span className="text-primary">Smart</span>
+        </span>
+        <span className="text-[10px] font-bold uppercase tracking-wide text-primary">Digital Technology</span>
+        <span className="hidden xl:block text-[9px] text-ink-soft">
+          Smart Security. Intelligent Networking. Reliable Solutions.
+        </span>
+      </span>
+    </Link>
+  );
+}
 
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => { setOpen(false); }, [pathname]);
-
-  const isHome = pathname === "/";
-  const transparent = isHome && !scrolled;
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        transparent
-          ? "bg-transparent"
-          : "bg-background/85 backdrop-blur-xl border-b border-border shadow-soft",
+        "fixed inset-x-0 top-0 z-50 bg-background transition-shadow",
+        scrolled ? "shadow-soft border-b border-border" : "border-b border-border/60",
       )}
     >
-      <div className="container-x flex h-16 items-center gap-6 md:h-20">
-        <Link to="/" className="flex items-center gap-2 shrink-0 group">
-          <span className={cn(
-            "grid h-9 w-9 place-items-center rounded-lg gradient-primary shadow-glow transition-transform group-hover:scale-105",
-          )}>
-            <ShieldCheck className="h-5 w-5 text-white" />
-          </span>
-          <span className={cn(
-            "flex flex-col leading-none",
-            transparent ? "text-white" : "text-ink",
-          )}>
-            <span className="font-display text-lg font-extrabold tracking-tight">iSmart</span>
-            <span className={cn("text-[10px] font-medium uppercase tracking-widest", transparent ? "text-white/70" : "text-ink-soft")}>Digital Tech</span>
-          </span>
-        </Link>
+      <div className="container-x flex h-[72px] items-center gap-6 md:h-20">
+        <Logo />
 
-        <nav className="hidden lg:flex items-center gap-1 ml-4">
-          {nav.map((item) => {
-            const active = pathname === item.to || (item.to !== "/" && pathname.startsWith(item.to));
+        <nav className="ml-auto hidden lg:flex items-center gap-1">
+          {mainNav.map((item) => {
+            const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             return (
               <Link
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                  transparent
-                    ? active
-                      ? "text-white bg-white/10"
-                      : "text-white/80 hover:text-white hover:bg-white/10"
-                    : active
-                      ? "text-primary bg-primary/10"
-                      : "text-ink-soft hover:text-ink hover:bg-muted",
+                  "relative inline-flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors",
+                  active ? "text-primary" : "text-ink hover:text-primary",
                 )}
               >
                 {item.label}
+                {item.caret && <ChevronDown className="h-3.5 w-3.5" />}
+                {active && <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-primary" />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
-          <a
-            href={site.phoneLink}
-            className={cn(
-              "hidden md:inline-flex text-sm font-medium",
-              transparent ? "text-white/85 hover:text-white" : "text-ink-soft hover:text-primary",
-            )}
-          >
-            {site.phone}
+        <div className="ml-auto flex items-center gap-3 lg:ml-4">
+          <a href={site.phoneLink} className="hidden md:flex items-center gap-2">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-accent text-primary">
+              <Phone className="h-4 w-4" />
+            </span>
+            <span className="leading-tight">
+              <span className="block text-sm font-bold text-ink">{site.phone}</span>
+              <span className="block text-[10px] text-ink-soft">Call Us Anytime</span>
+            </span>
           </a>
           <Link
             to="/quote"
-            className="hidden md:inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-white shadow-glow hover-lift"
+            className="hidden sm:inline-flex items-center rounded-md gradient-primary px-5 py-2.5 text-sm font-semibold text-white shadow-glow hover-lift"
           >
-            Request Quote
-            <ChevronRight className="h-4 w-4" />
+            Request a Quote
           </Link>
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className={cn(
-              "lg:hidden grid h-10 w-10 place-items-center rounded-md",
-              transparent ? "text-white hover:bg-white/10" : "text-ink hover:bg-muted",
-            )}
+            className="lg:hidden grid h-10 w-10 place-items-center rounded-md text-ink hover:bg-muted"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -116,13 +121,17 @@ export function Header() {
         >
           <div className="flex items-center justify-between p-5 border-b border-border">
             <span className="font-display text-lg font-bold">Menu</span>
-            <button aria-label="Close menu" onClick={() => setOpen(false)} className="grid h-10 w-10 place-items-center rounded-md hover:bg-muted">
+            <button
+              aria-label="Close menu"
+              onClick={() => setOpen(false)}
+              className="grid h-10 w-10 place-items-center rounded-md hover:bg-muted"
+            >
               <X className="h-5 w-5" />
             </button>
           </div>
           <nav className="p-3 flex flex-col">
-            {nav.map((item) => {
-              const active = pathname === item.to || (item.to !== "/" && pathname.startsWith(item.to));
+            {mainNav.map((item) => {
+              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               return (
                 <Link
                   key={item.to}
@@ -138,11 +147,13 @@ export function Header() {
             })}
             <Link
               to="/quote"
-              className="mt-3 inline-flex items-center justify-center rounded-full gradient-primary px-4 py-3 text-sm font-semibold text-white shadow-glow"
+              className="mt-3 inline-flex items-center justify-center rounded-md gradient-primary px-4 py-3 text-sm font-semibold text-white shadow-glow"
             >
-              Request Quote
+              Request a Quote
             </Link>
-            <a href={site.phoneLink} className="mt-2 text-center text-sm text-ink-soft py-2">{site.phone}</a>
+            <a href={site.phoneLink} className="mt-2 text-center text-sm text-ink-soft py-2">
+              {site.phone}
+            </a>
           </nav>
         </div>
       </div>
