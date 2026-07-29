@@ -91,37 +91,36 @@ export function Footer() {
             ))}
           </FooterCol>
 
-          <div className="grid gap-10 sm:grid-cols-2 lg:col-span-1 lg:grid-cols-1">
-            <div>
-              <h3 className="font-display text-sm font-bold text-white">Contact Us</h3>
-              <ul className="mt-4 space-y-3">
-                <ContactRow icon={Phone} value={site.phone} href={site.phoneLink} />
-                <ContactRow icon={Mail} value={site.email} href={site.emailLink} />
-                <ContactRow icon={MapPin} value="Nigeria" />
-                <ContactRow icon={Clock} value={site.hours} />
-              </ul>
-            </div>
+          <div>
+            <h3 className="font-display text-sm font-bold text-white">Contact Us</h3>
+            <ul className="mt-4 space-y-3">
+              <ContactRow icon={Phone} value={site.phone} href={site.phoneLink} />
+              <ContactRow icon={Mail} value={site.email} href={site.emailLink} />
+              <ContactRow icon={MapPin} value="Nigeria" />
+              <ContactRow icon={Clock} value={site.hours} />
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-display text-sm font-bold text-white">Newsletter</h3>
+            <p className="mt-2 text-xs text-white/60">Subscribe for updates and latest offers.</p>
+            <form className="mt-4 flex items-center gap-2" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="email"
+                required
+                placeholder="Enter your email"
+                className="min-w-0 flex-1 rounded-md bg-white/8 px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <button
+                aria-label="Subscribe"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-md gradient-primary text-white hover:scale-105 transition-transform"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </form>
           </div>
         </div>
 
-        <div className="mt-10 max-w-sm">
-          <h3 className="font-display text-sm font-bold text-white">Newsletter</h3>
-          <p className="mt-2 text-xs text-white/60">Subscribe for updates and latest offers.</p>
-          <form className="mt-4 flex items-center gap-2" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              required
-              placeholder="Enter your email"
-              className="flex-1 rounded-md bg-white/8 px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <button
-              aria-label="Subscribe"
-              className="grid h-10 w-10 place-items-center rounded-md gradient-primary text-white hover:scale-105 transition-transform"
-            >
-              <Send className="h-4 w-4" />
-            </button>
-          </form>
-        </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-[11px] text-white/45 md:flex-row">
           <p>© {new Date().getFullYear()} iSmart Digital Technology. All Rights Reserved.</p>
