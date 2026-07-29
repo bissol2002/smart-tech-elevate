@@ -27,14 +27,13 @@ function HomePage() {
   return (
     <>
       <Hero />
+      <FeatureStrip />
       <Partners />
       <Solutions />
-      <Industries />
+      <StatsBand />
       <Projects />
-      <WhyUs />
-      <Brands />
-      <Testimonials />
       <CTASection />
+
     </>
   );
 }
