@@ -89,7 +89,7 @@ export function Hero() {
         </div>
 
         {/* Tiandy distributor badge */}
-        <div className="hidden lg:block absolute right-6 bottom-16 rounded-xl bg-background px-6 py-4 text-center shadow-elevated">
+        <div className="hidden lg:block absolute right-6 bottom-28 rounded-xl bg-background px-6 py-4 text-center shadow-elevated">
           <div className="font-display text-xl font-extrabold text-primary">Tiandy</div>
           <div className="mt-0.5 text-xs font-semibold text-ink">Major</div>
           <div className="flex items-center justify-center gap-1 text-xs font-semibold text-ink">
