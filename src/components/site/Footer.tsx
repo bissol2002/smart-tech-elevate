@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import {
   Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Clock, Send, ShieldCheck, MessageCircle,
 } from "lucide-react";
-import { site } from "@/content/site";
+import { useSite } from "@/lib/cms";
 
 const company = [
   { label: "About Us", to: "/about" },
@@ -18,6 +18,7 @@ const solutionLinks = [
 const brandLinks = ["Tiandy", "Ubiquiti", "Mikrotik", "Cisco", "Bosch"];
 
 export function Footer() {
+  const site = useSite();
   return (
     <footer className="relative overflow-hidden bg-night text-white">
       <div className="absolute inset-0 gradient-mesh opacity-40 pointer-events-none" aria-hidden />

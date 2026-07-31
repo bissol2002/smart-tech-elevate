@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
-import { faqs } from "@/content/faqs";
+import { useCms } from "@/lib/cms";
 import { Download, FileText, Play, Plus, Minus } from "lucide-react";
 
 export const Route = createFileRoute("/resources")({
@@ -48,6 +48,7 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
 }
 
 function ResourcesPage() {
+  const { faqs } = useCms();
   return (
     <>
       <PageHero

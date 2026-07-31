@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { industries } from "@/content/industries";
+import { useCms } from "@/lib/cms";
+import { getIcon } from "@/lib/icon-map";
 
 export function Industries() {
+  const { industries } = useCms();
   return (
     <section className="relative bg-surface py-24 md:py-32">
       <div className="container-x">
@@ -18,7 +20,7 @@ export function Industries() {
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {industries.map((i) => {
-            const Icon = i.icon;
+            const Icon = getIcon(i.icon);
             return (
               <Link
                 key={i.slug}

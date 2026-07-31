@@ -17,6 +17,8 @@ import { Footer } from "@/components/site/Footer";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { BackToTop } from "@/components/site/BackToTop";
 import { site } from "@/content/site";
+import { getCmsContent } from "@/lib/cms.functions";
+import { CmsProvider } from "@/lib/cms";
 
 function NotFoundComponent() {
   return (
@@ -99,6 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
   }),
+  loader: () => getCmsContent(),
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -121,19 +124,27 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const cms = Route.useLoaderData();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname.startsWith("/admin");
   // Scroll to top on route change
   useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior }); }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      <main className="min-h-screen">
-        <Outlet />
-      </main>
-      <Footer />
-      <WhatsAppButton />
-      <BackToTop />
+      <CmsProvider value={cms}>
+        {!isAdmin && <Header />}
+        <main className="min-h-screen">
+          <Outlet />
+        </main>
+        {!isAdmin && (
+          <>
+            <Footer />
+            <WhatsAppButton />
+            <BackToTop />
+          </>
+        )}
+      </CmsProvider>
     </QueryClientProvider>
   );
 }
