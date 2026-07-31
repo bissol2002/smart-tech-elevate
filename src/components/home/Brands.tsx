@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { brands } from "@/content/brands";
+import { useCms } from "@/lib/cms";
 import productCctv from "@/assets/product-cctv.jpg";
 import productNetwork from "@/assets/product-network.jpg";
 import accessControl from "@/assets/access-control.jpg";
