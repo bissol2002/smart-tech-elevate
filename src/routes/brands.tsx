@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
-import { brands } from "@/content/brands";
+import { useCms } from "@/lib/cms";
 import productCctv from "@/assets/product-cctv.jpg";
 import productNetwork from "@/assets/product-network.jpg";
 import accessControl from "@/assets/access-control.jpg";
@@ -30,6 +30,7 @@ export const Route = createFileRoute("/brands")({
 });
 
 function BrandsPage() {
+  const { brands } = useCms();
   return (
     <>
       <PageHero

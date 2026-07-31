@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
-import { posts } from "@/content/posts";
+import { useCms } from "@/lib/cms";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import controlRoom from "@/assets/control-room.jpg";
 import productCctv from "@/assets/product-cctv.jpg";
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/blog")({
 });
 
 function BlogPage() {
+  const { posts } = useCms();
   const [featured, ...rest] = posts;
   return (
     <>

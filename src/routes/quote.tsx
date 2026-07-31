@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
-import { solutions } from "@/content/solutions";
-import { industries } from "@/content/industries";
+import { useCms } from "@/lib/cms";
 import { Send, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/quote")({
@@ -20,6 +19,7 @@ export const Route = createFileRoute("/quote")({
 });
 
 function QuotePage() {
+  const { solutions, industries } = useCms();
   const [sent, setSent] = useState(false);
   return (
     <>

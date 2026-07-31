@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
-import { projects } from "@/content/projects";
+import { useCms } from "@/lib/cms";
 import { MapPin } from "lucide-react";
 import controlRoom from "@/assets/control-room.jpg";
 import productCctv from "@/assets/product-cctv.jpg";
@@ -29,6 +29,7 @@ export const Route = createFileRoute("/projects")({
 });
 
 function ProjectsPage() {
+  const { projects } = useCms();
   const [cat, setCat] = useState<(typeof categories)[number]>("All");
   const list = cat==="All"?projects:projects.filter(p=>p.category===cat);
   return (

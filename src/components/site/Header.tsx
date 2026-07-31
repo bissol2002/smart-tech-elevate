@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown, Phone, ShieldCheck } from "lucide-react";
-import { site } from "@/content/site";
+import { useSite } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 
 const mainNav = [
@@ -34,6 +34,7 @@ function Logo() {
 }
 
 export function Header() {
+  const site = useSite();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

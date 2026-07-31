@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
-import { industries } from "@/content/industries";
+import { useCms } from "@/lib/cms";
+import { getIcon } from "@/lib/icon-map";
 import { ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/industries")({
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/industries")({
 });
 
 function IndustriesPage() {
+  const { industries } = useCms();
   return (
     <>
       <PageHero
@@ -31,7 +33,7 @@ function IndustriesPage() {
       <section className="py-20 md:py-28">
         <div className="container-x grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {industries.map(i=>{
-            const Icon = i.icon;
+            const Icon = getIcon(i.icon);
             return (
               <article key={i.slug} className={`group relative overflow-hidden rounded-2xl bg-card border border-border p-8 hover-lift shadow-card`}>
                 <div className={`absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${i.accent}`}/>

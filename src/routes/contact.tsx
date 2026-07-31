@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
-import { site } from "@/content/site";
+import { useSite } from "@/lib/cms";
 import { Mail, Phone, MapPin, MessageCircle, Clock, Send } from "lucide-react";
 import { useState } from "react";
 
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const site = useSite();
   const [sent, setSent] = useState(false);
   return (
     <>

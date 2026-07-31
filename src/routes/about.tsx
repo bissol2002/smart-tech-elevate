@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
 import { Counter } from "@/components/site/Counter";
-import { team } from "@/content/team";
+import { useCms } from "@/lib/cms";
 import { Target, Eye, Sparkles, Users, ShieldCheck, Award } from "lucide-react";
 import dataCentre from "@/assets/data-centre.jpg";
 
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/about")({
 });
 
 function AboutPage() {
+  const { team } = useCms();
   return (
     <>
       <PageHero

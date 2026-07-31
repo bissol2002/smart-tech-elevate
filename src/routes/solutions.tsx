@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
-import { solutions } from "@/content/solutions";
+import { useCms } from "@/lib/cms";
+import { getIcon } from "@/lib/icon-map";
 import { Check } from "lucide-react";
 
 export const Route = createFileRoute("/solutions")({
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/solutions")({
 });
 
 function SolutionsPage() {
+  const { solutions } = useCms();
   return (
     <>
       <PageHero
@@ -31,7 +33,7 @@ function SolutionsPage() {
       <section className="py-20 md:py-28">
         <div className="container-x grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {solutions.map(s=>{
-            const Icon = s.icon;
+            const Icon = getIcon(s.icon);
             return (
               <article key={s.slug} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover-lift shadow-card">
                 <div className="absolute top-0 right-0 h-40 w-40 rounded-full bg-primary/8 blur-3xl group-hover:bg-primary/20 transition"/>

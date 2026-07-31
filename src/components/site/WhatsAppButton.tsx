@@ -1,7 +1,8 @@
 import { MessageCircle } from "lucide-react";
-import { site } from "@/content/site";
+import { useSite } from "@/lib/cms";
 
 export function WhatsAppButton() {
+  const site = useSite();
   return (
     <a
       href={site.whatsappLink}
