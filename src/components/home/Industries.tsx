@@ -20,7 +20,7 @@ export function Industries() {
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {industries.map((i) => {
-            const Icon = i.icon;
+            const Icon = getIcon(i.icon);
             return (
               <Link
                 key={i.slug}
