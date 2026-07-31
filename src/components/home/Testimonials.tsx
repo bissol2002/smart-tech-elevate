@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
-import { testimonials } from "@/content/testimonials";
+import { useCms } from "@/lib/cms";
 
 export function Testimonials() {
+  const { testimonials } = useCms();
   const [i, setI] = useState(0);
   const t = testimonials[i];
   const total = testimonials.length;
