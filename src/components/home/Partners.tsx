@@ -1,7 +1,8 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { brands } from "@/content/brands";
+import { useCms } from "@/lib/cms";
 
 export function Partners() {
+  const { brands } = useCms();
   return (
     <section className="bg-background py-16">
       <div className="container-x">
