@@ -20,6 +20,7 @@ const brandImages: Record<string, string> = {
 };
 
 export function Brands() {
+  const { brands } = useCms();
   return (
     <section className="relative bg-surface py-24 md:py-32">
       <div className="container-x">
