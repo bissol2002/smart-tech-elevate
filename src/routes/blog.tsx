@@ -50,7 +50,7 @@ function BlogPage() {
               <div className="flex items-center gap-4 text-xs text-ink-soft">
                 <span className="rounded-full bg-primary/10 px-2.5 py-0.5 font-semibold text-primary uppercase tracking-widest">{featured.category}</span>
                 <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3"/>{new Date(featured.date).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>
-                <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3"/>{featured.readTime}</span>
+                <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3"/>{featured.read_time}</span>
               </div>
               <h2 className="mt-4 font-display text-2xl md:text-3xl font-extrabold text-ink leading-tight">{featured.title}</h2>
               <p className="mt-3 text-ink-soft leading-relaxed">{featured.excerpt}</p>
@@ -69,7 +69,7 @@ function BlogPage() {
                 <div className="p-6">
                   <div className="flex items-center gap-3 text-xs text-ink-soft">
                     <span className="rounded-full bg-primary/10 px-2.5 py-0.5 font-semibold text-primary uppercase tracking-widest">{p.category}</span>
-                    <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3"/>{p.readTime}</span>
+                    <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3"/>{p.read_time}</span>
                   </div>
                   <h3 className="mt-3 font-display text-lg font-bold text-ink line-clamp-2">{p.title}</h3>
                   <p className="mt-2 text-sm text-ink-soft leading-relaxed line-clamp-3">{p.excerpt}</p>
