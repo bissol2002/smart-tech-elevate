@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import {
-  Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Clock, Send, ShieldCheck, MessageCircle,
+  Mail, MapPin, Phone, Clock, Send, ShieldCheck, MessageCircle,
 } from "lucide-react";
-import { useSite } from "@/lib/cms";
+import { useSite, useSocialLinks, useWhatsAppNumbers } from "@/lib/cms";
+import { SocialIcons } from "@/components/site/SocialIcons";
 
 const company = [
   { label: "About Us", to: "/about" },
