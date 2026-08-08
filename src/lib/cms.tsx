@@ -16,3 +16,11 @@ export function useCms(): CmsContent {
 export function useSite() {
   return useCms().site;
 }
+
+export function useSocialLinks() {
+  return useCms().socialLinks;
+}
+
+export function useWhatsAppNumbers() {
+  return useCms().whatsappNumbers;
+}
