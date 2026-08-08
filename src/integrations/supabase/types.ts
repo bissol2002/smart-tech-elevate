@@ -116,6 +116,42 @@ export type Database = {
         }
         Relationships: []
       }
+      media_assets: {
+        Row: {
+          created_at: string
+          folder: string
+          id: string
+          mime: string
+          name: string
+          path: string
+          size: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          folder?: string
+          id?: string
+          mime?: string
+          name: string
+          path: string
+          size?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          folder?: string
+          id?: string
+          mime?: string
+          name?: string
+          path?: string
+          size?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           body: string
@@ -161,11 +197,81 @@ export type Database = {
         }
         Relationships: []
       }
+      project_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      project_images: {
+        Row: {
+          alt: string
+          created_at: string
+          id: string
+          project_id: string
+          sort: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          alt?: string
+          created_at?: string
+          id?: string
+          project_id: string
+          sort?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          alt?: string
+          created_at?: string
+          id?: string
+          project_id?: string
+          sort?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_images_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
+          archived: boolean
           category: string
+          category_id: string | null
           client: string
+          completion_date: string | null
+          cover_url: string
           created_at: string
+          description: string
           id: string
           image: string
           location: string
@@ -178,9 +284,14 @@ export type Database = {
           year: number
         }
         Insert: {
+          archived?: boolean
           category?: string
+          category_id?: string | null
           client?: string
+          completion_date?: string | null
+          cover_url?: string
           created_at?: string
+          description?: string
           id?: string
           image?: string
           location?: string
@@ -193,9 +304,14 @@ export type Database = {
           year?: number
         }
         Update: {
+          archived?: boolean
           category?: string
+          category_id?: string | null
           client?: string
+          completion_date?: string | null
+          cover_url?: string
           created_at?: string
+          description?: string
           id?: string
           image?: string
           location?: string
@@ -207,7 +323,15 @@ export type Database = {
           updated_at?: string
           year?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "projects_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "project_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       site_settings: {
         Row: {
@@ -216,16 +340,23 @@ export type Database = {
           email: string
           facebook: string | null
           hours: string
+          hours_saturday: string
+          hours_sunday: string
+          hours_weekday: string
           id: number
           instagram: string | null
           linkedin: string | null
+          maps_embed_url: string
+          maps_place_url: string
           name: string
           phone: string
           short_name: string
           tagline: string
+          tiktok: string | null
           twitter: string | null
           updated_at: string
           whatsapp: string
+          youtube: string | null
         }
         Insert: {
           address: string
@@ -233,16 +364,23 @@ export type Database = {
           email: string
           facebook?: string | null
           hours: string
+          hours_saturday?: string
+          hours_sunday?: string
+          hours_weekday?: string
           id?: number
           instagram?: string | null
           linkedin?: string | null
+          maps_embed_url?: string
+          maps_place_url?: string
           name: string
           phone: string
           short_name: string
           tagline: string
+          tiktok?: string | null
           twitter?: string | null
           updated_at?: string
           whatsapp: string
+          youtube?: string | null
         }
         Update: {
           address?: string
@@ -250,16 +388,53 @@ export type Database = {
           email?: string
           facebook?: string | null
           hours?: string
+          hours_saturday?: string
+          hours_sunday?: string
+          hours_weekday?: string
           id?: number
           instagram?: string | null
           linkedin?: string | null
+          maps_embed_url?: string
+          maps_place_url?: string
           name?: string
           phone?: string
           short_name?: string
           tagline?: string
+          tiktok?: string | null
           twitter?: string | null
           updated_at?: string
           whatsapp?: string
+          youtube?: string | null
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          platform: string
+          sort: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          platform: string
+          sort?: number
+          updated_at?: string
+          url?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          platform?: string
+          sort?: number
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
@@ -299,6 +474,21 @@ export type Database = {
           sort?: number
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      super_admin_emails: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
         }
         Relationships: []
       }
@@ -389,6 +579,39 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_numbers: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          notify: boolean
+          number: string
+          show_on_site: boolean
+          sort: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string
+          notify?: boolean
+          number: string
+          show_on_site?: boolean
+          sort?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          notify?: boolean
+          number?: string
+          show_on_site?: boolean
+          sort?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -401,6 +624,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
+      is_super_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "editor" | "super_admin"
