@@ -20,6 +20,8 @@ const brandLinks = ["Tiandy", "Ubiquiti", "Mikrotik", "Cisco", "Bosch"];
 
 export function Footer() {
   const site = useSite();
+  const socials = useSocialLinks();
+  const whatsapps = useWhatsAppNumbers().filter((w) => w.show_on_site);
   return (
     <footer className="relative overflow-hidden bg-night text-white">
       <div className="absolute inset-0 gradient-mesh opacity-40 pointer-events-none" aria-hidden />
