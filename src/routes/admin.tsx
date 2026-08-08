@@ -148,13 +148,21 @@ function Dashboard({ email }: { email: string }) {
             <button
               key={c.key}
               onClick={() => setActive(c)}
-              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active !== "media" && active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
             >
               {c.label}
             </button>
           ))}
+          <button
+            onClick={() => setActive("media")}
+            className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "media" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+          >
+            Media library
+          </button>
         </nav>
-        <CollectionEditor key={active.key} collection={active} />
+        {active === "media"
+          ? <MediaLibrary />
+          : <CollectionEditor key={active.key} collection={active} />}
       </div>
     </div>
   );
