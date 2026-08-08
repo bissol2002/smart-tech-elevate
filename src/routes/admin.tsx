@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { claimAdmin } from "@/lib/admin.functions";
-import { iconNames } from "@/lib/icon-map";
+import { syncAccess } from "@/lib/admin.functions";
+import { collections, emptyRow, iconNames, type Collection, type Row } from "@/lib/admin-collections";
+import { MediaLibrary, MediaPicker } from "@/components/admin/MediaLibrary";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
