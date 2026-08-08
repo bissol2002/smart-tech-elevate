@@ -99,10 +99,10 @@ function NoAccessCard({ email, onDone }: { email: string; onDone: () => void }) 
           onClick={async () => {
             setBusy(true); setMsg(null);
             try {
-              const res = await claimAdmin();
-              if (res.granted) onDone();
-              else setMsg("An admin already exists. Ask them to grant you access.");
-            } catch { setMsg("Could not claim admin access."); }
+              const res = await syncAccess();
+              if (res.role) onDone();
+              else setMsg("This account has no access. Ask a super admin to grant it.");
+            } catch { setMsg("Could not verify access."); }
             setBusy(false);
           }}
           className="mt-5 w-full rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-white shadow-glow disabled:opacity-60"
