@@ -258,11 +258,6 @@ function Dashboard({ email }: { email: string }) {
   );
 }
 
-function emptyRow(c: Collection): Row {
-  const r: Row = {};
-  for (const f of c.fields) r[f.name] = f.type === "number" ? 0 : f.type === "bool" ? true : f.type === "list" ? [] : f.type === "json" ? [] : "";
-  return r;
-}
 
 function CollectionEditor({ collection }: { collection: Collection }) {
   const [rows, setRows] = useState<Row[] | null>(null);
