@@ -82,8 +82,16 @@ export function Footer() {
             <h3 className="font-display text-sm font-bold text-white">Contact Us</h3>
             <ul className="mt-4 space-y-3">
               <ContactRow icon={Phone} value={site.phone} href={site.phoneLink} />
+              {whatsapps.map((w) => (
+                <ContactRow
+                  key={w.id}
+                  icon={MessageCircle}
+                  value={w.number}
+                  href={`https://wa.me/${w.number.replace(/[^0-9]/g, "")}`}
+                />
+              ))}
               <ContactRow icon={Mail} value={site.email} href={site.emailLink} />
-              <ContactRow icon={MapPin} value="Nigeria" />
+              <ContactRow icon={MapPin} value={site.address} href={site.mapsPlaceUrl || undefined} />
               <ContactRow icon={Clock} value={site.hours} />
             </ul>
           </div>
