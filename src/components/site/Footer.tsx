@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import {
-  Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Clock, Send, ShieldCheck, MessageCircle,
+  Mail, MapPin, Phone, Clock, Send, ShieldCheck, MessageCircle,
 } from "lucide-react";
-import { useSite } from "@/lib/cms";
+import { useSite, useSocialLinks, useWhatsAppNumbers } from "@/lib/cms";
+import { SocialIcons } from "@/components/site/SocialIcons";
 
 const company = [
   { label: "About Us", to: "/about" },
@@ -19,6 +20,8 @@ const brandLinks = ["Tiandy", "Ubiquiti", "Mikrotik", "Cisco", "Bosch"];
 
 export function Footer() {
   const site = useSite();
+  const socials = useSocialLinks();
+  const whatsapps = useWhatsAppNumbers().filter((w) => w.show_on_site);
   return (
     <footer className="relative overflow-hidden bg-night text-white">
       <div className="absolute inset-0 gradient-mesh opacity-40 pointer-events-none" aria-hidden />
@@ -42,24 +45,7 @@ export function Footer() {
             <p className="mt-5 max-w-xs text-xs leading-relaxed text-white/60">
               Smart Security. Intelligent Networking. Reliable Solutions.
             </p>
-            <div className="mt-6 flex items-center gap-2.5">
-              {[
-                { href: site.socials.facebook, icon: Facebook },
-                { href: site.socials.instagram, icon: Instagram },
-                { href: site.socials.linkedin, icon: Linkedin },
-                { href: site.whatsappLink, icon: MessageCircle },
-              ].map(({ href, icon: Icon }) => (
-                <a
-                  key={href}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-9 w-9 place-items-center rounded-full bg-white/8 text-white/70 hover:bg-primary hover:text-white transition"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
+            <SocialIcons className="mt-6" links={socials} whatsappLink={site.whatsappLink} variant="dark" />
           </div>
 
           <FooterCol title="Company">
@@ -96,8 +82,16 @@ export function Footer() {
             <h3 className="font-display text-sm font-bold text-white">Contact Us</h3>
             <ul className="mt-4 space-y-3">
               <ContactRow icon={Phone} value={site.phone} href={site.phoneLink} />
+              {whatsapps.map((w) => (
+                <ContactRow
+                  key={w.id}
+                  icon={MessageCircle}
+                  value={w.number}
+                  href={`https://wa.me/${w.number.replace(/[^0-9]/g, "")}`}
+                />
+              ))}
               <ContactRow icon={Mail} value={site.email} href={site.emailLink} />
-              <ContactRow icon={MapPin} value="Nigeria" />
+              <ContactRow icon={MapPin} value={site.address} href={site.mapsPlaceUrl || undefined} />
               <ContactRow icon={Clock} value={site.hours} />
             </ul>
           </div>

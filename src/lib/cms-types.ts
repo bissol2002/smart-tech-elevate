@@ -11,7 +11,38 @@ export interface SiteSettings {
   emailLink: string;
   address: string;
   hours: string;
+  hoursWeekday: string;
+  hoursSaturday: string;
+  hoursSunday: string;
+  mapsEmbedUrl: string;
+  mapsPlaceUrl: string;
   socials: { facebook: string; instagram: string; linkedin: string; twitter: string };
+}
+
+export type SocialPlatform =
+  | "facebook"
+  | "instagram"
+  | "x"
+  | "linkedin"
+  | "youtube"
+  | "tiktok"
+  | "whatsapp";
+
+export interface SocialLinkRow {
+  id: string;
+  platform: string;
+  url: string;
+  enabled: boolean;
+  sort: number;
+}
+
+export interface WhatsAppNumberRow {
+  id: string;
+  label: string;
+  number: string;
+  notify: boolean;
+  show_on_site: boolean;
+  sort: number;
 }
 
 export interface SolutionRow {
@@ -46,18 +77,39 @@ export interface BrandRow {
   sort: number;
 }
 
+export interface ProjectCategoryRow {
+  id: string;
+  slug: string;
+  name: string;
+  sort: number;
+}
+
+export interface ProjectImageRow {
+  id: string;
+  project_id: string;
+  url: string;
+  alt: string;
+  sort: number;
+}
+
 export interface ProjectRow {
   id: string;
   slug: string;
   title: string;
   category: string;
+  category_id: string | null;
   client: string;
   location: string;
   year: number;
   summary: string;
+  description: string;
+  completion_date: string | null;
+  cover_url: string;
+  archived: boolean;
   stats: { label: string; value: string }[];
   image: string;
   sort: number;
+  images: ProjectImageRow[];
 }
 
 export interface TestimonialRow {
@@ -100,9 +152,12 @@ export interface PostRow {
 
 export interface CmsContent {
   site: SiteSettings;
+  socialLinks: SocialLinkRow[];
+  whatsappNumbers: WhatsAppNumberRow[];
   solutions: SolutionRow[];
   industries: IndustryRow[];
   brands: BrandRow[];
+  projectCategories: ProjectCategoryRow[];
   projects: ProjectRow[];
   testimonials: TestimonialRow[];
   team: TeamRow[];

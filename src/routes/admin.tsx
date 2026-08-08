@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { claimAdmin } from "@/lib/admin.functions";
-import { iconNames } from "@/lib/icon-map";
+import { syncAccess } from "@/lib/admin.functions";
+import { collections, emptyRow, iconNames, type Collection, type Row } from "@/lib/admin-collections";
+import { MediaLibrary } from "@/components/admin/MediaLibrary";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
@@ -17,109 +18,6 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type FieldType = "text" | "textarea" | "number" | "bool" | "list" | "json" | "icon";
-type Field = { name: string; label: string; type?: FieldType };
-type Collection = { key: string; table: string; label: string; single?: boolean; fields: Field[]; title: (r: Row) => string };
-type Row = Record<string, any>;
-
-const collections: Collection[] = [
-  {
-    key: "site", table: "site_settings", label: "Site & Contact", single: true,
-    title: () => "Site settings",
-    fields: [
-      { name: "name", label: "Company name" },
-      { name: "short_name", label: "Short name" },
-      { name: "tagline", label: "Tagline" },
-      { name: "domain", label: "Domain" },
-      { name: "phone", label: "Phone" },
-      { name: "whatsapp", label: "WhatsApp number" },
-      { name: "email", label: "Email" },
-      { name: "address", label: "Address", type: "textarea" },
-      { name: "hours", label: "Opening hours" },
-      { name: "facebook", label: "Facebook URL" },
-      { name: "instagram", label: "Instagram URL" },
-      { name: "linkedin", label: "LinkedIn URL" },
-      { name: "twitter", label: "Twitter URL" },
-    ],
-  },
-  {
-    key: "solutions", table: "solutions", label: "Solutions", title: (r) => r.title,
-    fields: [
-      { name: "title", label: "Title" }, { name: "slug", label: "Slug" },
-      { name: "short", label: "Short line" }, { name: "description", label: "Description", type: "textarea" },
-      { name: "icon", label: "Icon", type: "icon" },
-      { name: "features", label: "Features (one per line)", type: "list" },
-      { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-  {
-    key: "industries", table: "industries", label: "Industries", title: (r) => r.title,
-    fields: [
-      { name: "title", label: "Title" }, { name: "slug", label: "Slug" },
-      { name: "blurb", label: "Blurb", type: "textarea" },
-      { name: "icon", label: "Icon", type: "icon" },
-      { name: "accent", label: "Accent classes" },
-      { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-  {
-    key: "brands", table: "brands", label: "Brands", title: (r) => r.name,
-    fields: [
-      { name: "name", label: "Name" }, { name: "slug", label: "Slug" },
-      { name: "category", label: "Category" }, { name: "tagline", label: "Tagline" },
-      { name: "description", label: "Description", type: "textarea" },
-      { name: "color", label: "Brand colour (hex)" },
-      { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-  {
-    key: "projects", table: "projects", label: "Projects", title: (r) => r.title,
-    fields: [
-      { name: "title", label: "Title" }, { name: "slug", label: "Slug" },
-      { name: "category", label: "Category" }, { name: "client", label: "Client" },
-      { name: "location", label: "Location" }, { name: "year", label: "Year", type: "number" },
-      { name: "summary", label: "Summary", type: "textarea" },
-      { name: "stats", label: 'Stats JSON e.g. [{"label":"Cameras","value":"240"}]', type: "json" },
-      { name: "image", label: "Image key" },
-      { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-  {
-    key: "testimonials", table: "testimonials", label: "Testimonials", title: (r) => `${r.name} — ${r.company}`,
-    fields: [
-      { name: "name", label: "Name" }, { name: "role", label: "Role" },
-      { name: "company", label: "Company" }, { name: "quote", label: "Quote", type: "textarea" },
-      { name: "rating", label: "Rating (1-5)", type: "number" },
-      { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-  {
-    key: "team", table: "team", label: "Team", title: (r) => r.name,
-    fields: [
-      { name: "name", label: "Name" }, { name: "role", label: "Role" },
-      { name: "initials", label: "Initials" }, { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-  {
-    key: "faqs", table: "faqs", label: "FAQs", title: (r) => r.q,
-    fields: [
-      { name: "q", label: "Question" }, { name: "a", label: "Answer", type: "textarea" },
-      { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-  {
-    key: "posts", table: "posts", label: "Blog posts", title: (r) => r.title,
-    fields: [
-      { name: "title", label: "Title" }, { name: "slug", label: "Slug" },
-      { name: "excerpt", label: "Excerpt", type: "textarea" },
-      { name: "body", label: "Body", type: "textarea" },
-      { name: "date", label: "Date (YYYY-MM-DD)" }, { name: "category", label: "Category" },
-      { name: "read_time", label: "Read time" },
-      { name: "published", label: "Published", type: "bool" },
-      { name: "sort", label: "Sort order", type: "number" },
-    ],
-  },
-];
 
 function AdminPage() {
   const [ready, setReady] = useState(false);
@@ -130,8 +28,13 @@ function AdminPage() {
     const { data } = await supabase.auth.getUser();
     if (!data.user) { setEmail(null); setIsAdmin(false); setReady(true); return; }
     setEmail(data.user.email ?? "");
-    const { data: role } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
-    setIsAdmin(Boolean(role));
+    try {
+      const res = await syncAccess();
+      setIsAdmin(Boolean(res.role));
+    } catch {
+      const { data: role } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
+      setIsAdmin(Boolean(role));
+    }
     setReady(true);
   }, []);
 
@@ -201,10 +104,10 @@ function NoAccessCard({ email, onDone }: { email: string; onDone: () => void }) 
           onClick={async () => {
             setBusy(true); setMsg(null);
             try {
-              const res = await claimAdmin();
-              if (res.granted) onDone();
-              else setMsg("An admin already exists. Ask them to grant you access.");
-            } catch { setMsg("Could not claim admin access."); }
+              const res = await syncAccess();
+              if (res.role) onDone();
+              else setMsg("This account has no access. Ask a super admin to grant it.");
+            } catch { setMsg("Could not verify access."); }
             setBusy(false);
           }}
           className="mt-5 w-full rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-white shadow-glow disabled:opacity-60"
@@ -218,7 +121,7 @@ function NoAccessCard({ email, onDone }: { email: string; onDone: () => void }) 
 }
 
 function Dashboard({ email }: { email: string }) {
-  const [active, setActive] = useState(collections[0]);
+  const [active, setActive] = useState<Collection | "media">(collections[0]);
   return (
     <div className="min-h-screen bg-surface">
       <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
@@ -245,23 +148,26 @@ function Dashboard({ email }: { email: string }) {
             <button
               key={c.key}
               onClick={() => setActive(c)}
-              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active !== "media" && active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
             >
               {c.label}
             </button>
           ))}
+          <button
+            onClick={() => setActive("media")}
+            className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "media" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+          >
+            Media library
+          </button>
         </nav>
-        <CollectionEditor key={active.key} collection={active} />
+        {active === "media"
+          ? <MediaLibrary />
+          : <CollectionEditor key={active.key} collection={active} />}
       </div>
     </div>
   );
 }
 
-function emptyRow(c: Collection): Row {
-  const r: Row = {};
-  for (const f of c.fields) r[f.name] = f.type === "number" ? 0 : f.type === "bool" ? true : f.type === "list" ? [] : f.type === "json" ? [] : "";
-  return r;
-}
 
 function CollectionEditor({ collection }: { collection: Collection }) {
   const [rows, setRows] = useState<Row[] | null>(null);
