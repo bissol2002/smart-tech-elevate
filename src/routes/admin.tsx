@@ -28,8 +28,13 @@ function AdminPage() {
     const { data } = await supabase.auth.getUser();
     if (!data.user) { setEmail(null); setIsAdmin(false); setReady(true); return; }
     setEmail(data.user.email ?? "");
-    const { data: role } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
-    setIsAdmin(Boolean(role));
+    try {
+      const res = await syncAccess();
+      setIsAdmin(Boolean(res.role));
+    } catch {
+      const { data: role } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
+      setIsAdmin(Boolean(role));
+    }
     setReady(true);
   }, []);
 
