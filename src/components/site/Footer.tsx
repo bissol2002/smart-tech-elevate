@@ -43,24 +43,7 @@ export function Footer() {
             <p className="mt-5 max-w-xs text-xs leading-relaxed text-white/60">
               Smart Security. Intelligent Networking. Reliable Solutions.
             </p>
-            <div className="mt-6 flex items-center gap-2.5">
-              {[
-                { href: site.socials.facebook, icon: Facebook },
-                { href: site.socials.instagram, icon: Instagram },
-                { href: site.socials.linkedin, icon: Linkedin },
-                { href: site.whatsappLink, icon: MessageCircle },
-              ].map(({ href, icon: Icon }) => (
-                <a
-                  key={href}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-9 w-9 place-items-center rounded-full bg-white/8 text-white/70 hover:bg-primary hover:text-white transition"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
+            <SocialIcons className="mt-6" links={socials} whatsappLink={site.whatsappLink} variant="dark" />
           </div>
 
           <FooterCol title="Company">
