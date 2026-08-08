@@ -17,7 +17,7 @@ function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-type IconLike = LucideIcon | ((props: React.SVGProps<SVGSVGElement>) => JSX.Element);
+type IconLike = LucideIcon | ((props: React.SVGProps<SVGSVGElement>) => React.ReactElement);
 
 export const socialMeta: Record<string, { label: string; Icon: IconLike }> = {
   facebook: { label: "Facebook", Icon: Facebook },
