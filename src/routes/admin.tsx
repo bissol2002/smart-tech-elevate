@@ -237,6 +237,8 @@ function CollectionEditor({ collection }: { collection: Collection }) {
 
       {editing && <RowForm collection={collection} row={editing} onCancel={collection.single ? undefined : () => setEditing(null)} onSave={save} onDelete={!collection.single && editing.id ? () => remove(editing) : undefined} />}
 
+      {collection.key === "projects" && editing?.id && <ProjectGallery projectId={editing.id as string} />}
+
       {!collection.single && (
         <ul className="mt-6 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
           {rows.map((r) => (
