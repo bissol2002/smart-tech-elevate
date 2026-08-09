@@ -152,7 +152,7 @@ function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
             <button
               key={c.key}
               onClick={() => setActive(c)}
-              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active !== "media" && active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${typeof active !== "string" && active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
             >
               {c.label}
             </button>
@@ -163,10 +163,20 @@ function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
           >
             Media library
           </button>
+          {isSuper && (
+            <button
+              onClick={() => setActive("users")}
+              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "users" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+            >
+              Users &amp; roles
+            </button>
+          )}
         </nav>
         {active === "media"
           ? <MediaLibrary />
-          : <CollectionEditor key={active.key} collection={active} />}
+          : active === "users"
+            ? <UsersPanel />
+            : <CollectionEditor key={active.key} collection={active} />}
       </div>
     </div>
   );
