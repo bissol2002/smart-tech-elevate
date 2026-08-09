@@ -23,17 +23,21 @@ function AdminPage() {
   const [ready, setReady] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuper, setIsSuper] = useState(false);
 
   const refresh = useCallback(async () => {
     const { data } = await supabase.auth.getUser();
-    if (!data.user) { setEmail(null); setIsAdmin(false); setReady(true); return; }
+    if (!data.user) { setEmail(null); setIsAdmin(false); setIsSuper(false); setReady(true); return; }
     setEmail(data.user.email ?? "");
     try {
       const res = await syncAccess();
       setIsAdmin(Boolean(res.role));
+      setIsSuper(res.role === "super_admin");
     } catch {
       const { data: role } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
-      setIsAdmin(Boolean(role));
+      const { data: sup } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "super_admin" });
+      setIsAdmin(Boolean(role) || Boolean(sup));
+      setIsSuper(Boolean(sup));
     }
     setReady(true);
   }, []);
@@ -43,7 +47,7 @@ function AdminPage() {
   if (!ready) return <Center><Loader2 className="h-6 w-6 animate-spin text-primary" /></Center>;
   if (!email) return <LoginCard onDone={refresh} />;
   if (!isAdmin) return <NoAccessCard email={email} onDone={refresh} />;
-  return <Dashboard email={email} />;
+  return <Dashboard email={email} isSuper={isSuper} />;
 }
 
 function Center({ children }: { children: React.ReactNode }) {
