@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { syncAccess } from "@/lib/admin.functions";
 import { collections, emptyRow, iconNames, type Collection, type Row } from "@/lib/admin-collections";
 import { MediaLibrary } from "@/components/admin/MediaLibrary";
+import { UsersPanel } from "@/components/admin/UsersPanel";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
