@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { syncAccess } from "@/lib/admin.functions";
 import { collections, emptyRow, iconNames, type Collection, type Row } from "@/lib/admin-collections";
 import { MediaLibrary } from "@/components/admin/MediaLibrary";
+import { UsersPanel } from "@/components/admin/UsersPanel";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
@@ -23,17 +24,21 @@ function AdminPage() {
   const [ready, setReady] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuper, setIsSuper] = useState(false);
 
   const refresh = useCallback(async () => {
     const { data } = await supabase.auth.getUser();
-    if (!data.user) { setEmail(null); setIsAdmin(false); setReady(true); return; }
+    if (!data.user) { setEmail(null); setIsAdmin(false); setIsSuper(false); setReady(true); return; }
     setEmail(data.user.email ?? "");
     try {
       const res = await syncAccess();
       setIsAdmin(Boolean(res.role));
+      setIsSuper(res.role === "super_admin");
     } catch {
       const { data: role } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
-      setIsAdmin(Boolean(role));
+      const { data: sup } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "super_admin" });
+      setIsAdmin(Boolean(role) || Boolean(sup));
+      setIsSuper(Boolean(sup));
     }
     setReady(true);
   }, []);
@@ -43,7 +48,7 @@ function AdminPage() {
   if (!ready) return <Center><Loader2 className="h-6 w-6 animate-spin text-primary" /></Center>;
   if (!email) return <LoginCard onDone={refresh} />;
   if (!isAdmin) return <NoAccessCard email={email} onDone={refresh} />;
-  return <Dashboard email={email} />;
+  return <Dashboard email={email} isSuper={isSuper} />;
 }
 
 function Center({ children }: { children: React.ReactNode }) {
@@ -120,8 +125,8 @@ function NoAccessCard({ email, onDone }: { email: string; onDone: () => void }) 
   );
 }
 
-function Dashboard({ email }: { email: string }) {
-  const [active, setActive] = useState<Collection | "media">(collections[0]);
+function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
+  const [active, setActive] = useState<Collection | "media" | "users">(collections[0]);
   return (
     <div className="min-h-screen bg-surface">
       <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
@@ -148,7 +153,7 @@ function Dashboard({ email }: { email: string }) {
             <button
               key={c.key}
               onClick={() => setActive(c)}
-              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active !== "media" && active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${typeof active !== "string" && active.key === c.key ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
             >
               {c.label}
             </button>
@@ -159,10 +164,20 @@ function Dashboard({ email }: { email: string }) {
           >
             Media library
           </button>
+          {isSuper && (
+            <button
+              onClick={() => setActive("users")}
+              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "users" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+            >
+              Users &amp; roles
+            </button>
+          )}
         </nav>
         {active === "media"
           ? <MediaLibrary />
-          : <CollectionEditor key={active.key} collection={active} />}
+          : active === "users"
+            ? <UsersPanel />
+            : <CollectionEditor key={active.key} collection={active} />}
       </div>
     </div>
   );
