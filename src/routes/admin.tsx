@@ -2,9 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { syncAccess } from "@/lib/admin.functions";
-import { collections, emptyRow, iconNames, type Collection, type Row } from "@/lib/admin-collections";
-import { MediaLibrary } from "@/components/admin/MediaLibrary";
+import { collections, emptyRow, iconNames, type Collection, type Field, type Row } from "@/lib/admin-collections";
+import { MediaLibrary, MediaPicker } from "@/components/admin/MediaLibrary";
 import { UsersPanel } from "@/components/admin/UsersPanel";
+import { ProjectGallery } from "@/components/admin/ProjectGallery";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
@@ -236,6 +237,8 @@ function CollectionEditor({ collection }: { collection: Collection }) {
 
       {editing && <RowForm collection={collection} row={editing} onCancel={collection.single ? undefined : () => setEditing(null)} onSave={save} onDelete={!collection.single && editing.id ? () => remove(editing) : undefined} />}
 
+      {collection.key === "projects" && editing?.id && <ProjectGallery projectId={editing.id as string} />}
+
       {!collection.single && (
         <ul className="mt-6 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
           {rows.map((r) => (
@@ -254,6 +257,38 @@ function CollectionEditor({ collection }: { collection: Collection }) {
   );
 }
 
+function RefSelect({ field, value, onChange, className }: { field: Field; value: string | null; onChange: (v: string | null) => void; className: string }) {
+  const [opts, setOpts] = useState<Row[]>([]);
+  useEffect(() => {
+    let alive = true;
+    void (async () => {
+      const { data } = await supabase.from(field.refTable as any).select("*");
+      if (alive) setOpts((data ?? []) as Row[]);
+    })();
+    return () => { alive = false; };
+  }, [field.refTable]);
+  return (
+    <select className={className} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)}>
+      <option value="">— none —</option>
+      {opts.map((o) => <option key={o.id} value={o.id}>{o[field.refLabel ?? "name"]}</option>)}
+    </select>
+  );
+}
+
+function ImageField({ value, onChange, className }: { value: string; onChange: (v: string) => void; className: string }) {
+  const [picking, setPicking] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center gap-3">
+        {value ? <img src={value} alt="Selected" className="mt-1.5 h-14 w-20 rounded-lg object-cover" /> : null}
+        <input className={className} placeholder="Image URL" value={value} onChange={(e) => onChange(e.target.value)} />
+        <button type="button" onClick={() => setPicking(true)} className="mt-1.5 shrink-0 rounded-full border border-border px-4 py-2 text-xs font-semibold hover:border-primary">Choose</button>
+      </div>
+      {picking && <MediaPicker onPick={onChange} onClose={() => setPicking(false)} />}
+    </div>
+  );
+}
+
 function RowForm({ collection, row, onSave, onCancel, onDelete }: { collection: Collection; row: Row; onSave: (r: Row) => void; onCancel?: () => void; onDelete?: () => void }) {
   const [draft, setDraft] = useState<Row>(row);
   useEffect(() => setDraft(row), [row]);
@@ -266,7 +301,7 @@ function RowForm({ collection, row, onSave, onCancel, onDelete }: { collection: 
       className="mt-6 grid gap-4 rounded-2xl border border-border bg-card p-6 shadow-card md:grid-cols-2"
     >
       {collection.fields.map((f) => (
-        <div key={f.name} className={f.type === "textarea" || f.type === "list" || f.type === "json" ? "md:col-span-2" : ""}>
+        <div key={f.name} className={f.type === "textarea" || f.type === "list" || f.type === "json" || f.type === "image" ? "md:col-span-2" : ""}>
           <label className="text-xs font-bold uppercase tracking-wider text-ink-soft">{f.label}</label>
           {f.type === "textarea" ? (
             <textarea rows={4} className={input} value={draft[f.name] ?? ""} onChange={(e) => set(f.name, e.target.value)} />
@@ -278,6 +313,16 @@ function RowForm({ collection, row, onSave, onCancel, onDelete }: { collection: 
             <div className="mt-2"><input type="checkbox" className="h-4 w-4 accent-primary" checked={Boolean(draft[f.name])} onChange={(e) => set(f.name, e.target.checked)} /></div>
           ) : f.type === "number" ? (
             <input type="number" className={input} value={draft[f.name] ?? 0} onChange={(e) => set(f.name, Number(e.target.value))} />
+          ) : f.type === "date" ? (
+            <input type="date" className={input} value={draft[f.name] ?? ""} onChange={(e) => set(f.name, e.target.value || null)} />
+          ) : f.type === "select" ? (
+            <select className={input} value={draft[f.name] ?? ""} onChange={(e) => set(f.name, e.target.value)}>
+              {(f.options ?? []).map((o) => <option key={o} value={o}>{o}</option>)}
+            </select>
+          ) : f.type === "ref" ? (
+            <RefSelect field={f} value={draft[f.name] ?? null} onChange={(v) => set(f.name, v)} className={input} />
+          ) : f.type === "image" ? (
+            <ImageField value={draft[f.name] ?? ""} onChange={(v) => set(f.name, v)} className={input} />
           ) : f.type === "icon" ? (
             <select className={input} value={draft[f.name] ?? ""} onChange={(e) => set(f.name, e.target.value)}>
               {iconNames.map((n) => <option key={n} value={n}>{n}</option>)}
