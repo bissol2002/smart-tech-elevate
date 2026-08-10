@@ -19,6 +19,8 @@ import { BackToTop } from "@/components/site/BackToTop";
 import { site } from "@/content/site";
 import { getCmsContent } from "@/lib/cms.functions";
 import { CmsProvider } from "@/lib/cms";
+import { Toaster } from "@/components/ui/sonner";
+import { useCartSync } from "@/hooks/useCartSync";
 
 function NotFoundComponent() {
   return (
@@ -127,6 +129,7 @@ function RootComponent() {
   const cms = Route.useLoaderData();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isAdmin = pathname.startsWith("/admin");
+  useCartSync();
   // Scroll to top on route change
   useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior }); }, [pathname]);
 
@@ -144,6 +147,7 @@ function RootComponent() {
             <BackToTop />
           </>
         )}
+        <Toaster position="top-right" richColors />
       </CmsProvider>
     </QueryClientProvider>
   );

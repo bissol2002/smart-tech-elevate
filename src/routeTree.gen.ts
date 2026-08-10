@@ -14,6 +14,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ProductsRouteImport } from './routes/products'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BrandsRouteImport } from './routes/brands'
@@ -21,6 +22,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 
 const SolutionsRoute = SolutionsRouteImport.update({
   id: '/solutions',
@@ -45,6 +47,11 @@ const QuoteRoute = QuoteRouteImport.update({
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustriesRoute = IndustriesRouteImport.update({
@@ -82,6 +89,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductHandleRoute = ProductHandleRouteImport.update({
+  id: '/product/$handle',
+  path: '/product/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -91,11 +103,13 @@ export interface FileRoutesByFullPath {
   '/brands': typeof BrandsRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
+  '/products': typeof ProductsRoute
   '/projects': typeof ProjectsRoute
   '/quote': typeof QuoteRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/product/$handle': typeof ProductHandleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -105,11 +119,13 @@ export interface FileRoutesByTo {
   '/brands': typeof BrandsRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
+  '/products': typeof ProductsRoute
   '/projects': typeof ProjectsRoute
   '/quote': typeof QuoteRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/product/$handle': typeof ProductHandleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -120,11 +136,13 @@ export interface FileRoutesById {
   '/brands': typeof BrandsRoute
   '/contact': typeof ContactRoute
   '/industries': typeof IndustriesRoute
+  '/products': typeof ProductsRoute
   '/projects': typeof ProjectsRoute
   '/quote': typeof QuoteRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/solutions': typeof SolutionsRoute
+  '/product/$handle': typeof ProductHandleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,11 +154,13 @@ export interface FileRouteTypes {
     | '/brands'
     | '/contact'
     | '/industries'
+    | '/products'
     | '/projects'
     | '/quote'
     | '/resources'
     | '/sitemap.xml'
     | '/solutions'
+    | '/product/$handle'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,11 +170,13 @@ export interface FileRouteTypes {
     | '/brands'
     | '/contact'
     | '/industries'
+    | '/products'
     | '/projects'
     | '/quote'
     | '/resources'
     | '/sitemap.xml'
     | '/solutions'
+    | '/product/$handle'
   id:
     | '__root__'
     | '/'
@@ -164,11 +186,13 @@ export interface FileRouteTypes {
     | '/brands'
     | '/contact'
     | '/industries'
+    | '/products'
     | '/projects'
     | '/quote'
     | '/resources'
     | '/sitemap.xml'
     | '/solutions'
+    | '/product/$handle'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -179,11 +203,13 @@ export interface RootRouteChildren {
   BrandsRoute: typeof BrandsRoute
   ContactRoute: typeof ContactRoute
   IndustriesRoute: typeof IndustriesRoute
+  ProductsRoute: typeof ProductsRoute
   ProjectsRoute: typeof ProjectsRoute
   QuoteRoute: typeof QuoteRoute
   ResourcesRoute: typeof ResourcesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolutionsRoute: typeof SolutionsRoute
+  ProductHandleRoute: typeof ProductHandleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -221,6 +247,13 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industries': {
@@ -272,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/product/$handle': {
+      id: '/product/$handle'
+      path: '/product/$handle'
+      fullPath: '/product/$handle'
+      preLoaderRoute: typeof ProductHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -283,11 +323,13 @@ const rootRouteChildren: RootRouteChildren = {
   BrandsRoute: BrandsRoute,
   ContactRoute: ContactRoute,
   IndustriesRoute: IndustriesRoute,
+  ProductsRoute: ProductsRoute,
   ProjectsRoute: ProjectsRoute,
   QuoteRoute: QuoteRoute,
   ResourcesRoute: ResourcesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolutionsRoute: SolutionsRoute,
+  ProductHandleRoute: ProductHandleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

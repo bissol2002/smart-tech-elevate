@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown, Phone, ShieldCheck } from "lucide-react";
 import { useSite } from "@/lib/cms";
 import { cn } from "@/lib/utils";
+import { CartDrawer } from "@/components/shop/CartDrawer";
 
 const mainNav = [
   { label: "Home", to: "/" },
   { label: "About Us", to: "/about" },
   { label: "Solutions", to: "/solutions", caret: true },
+  { label: "Products", to: "/products" },
   { label: "Brands", to: "/brands" },
   { label: "Projects", to: "/projects" },
   { label: "Why Choose Us", to: "/industries" },
@@ -96,6 +98,7 @@ export function Header() {
           >
             Request a Quote
           </Link>
+          <CartDrawer />
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
