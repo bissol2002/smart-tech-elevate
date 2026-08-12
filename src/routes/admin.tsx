@@ -7,6 +7,8 @@ import { syncAccess } from "@/lib/admin.functions";
 import { collections, emptyRow, iconNames, type Collection, type Field, type Row } from "@/lib/admin-collections";
 import { MediaLibrary, MediaPicker } from "@/components/admin/MediaLibrary";
 import { UsersPanel } from "@/components/admin/UsersPanel";
+import { OrdersPanel } from "@/components/admin/OrdersPanel";
+
 import { ProjectGallery } from "@/components/admin/ProjectGallery";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
 
