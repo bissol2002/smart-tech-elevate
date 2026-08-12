@@ -152,7 +152,7 @@ function NoAccessCard({ email, onDone }: { email: string; onDone: () => void }) 
 }
 
 function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
-  const [active, setActive] = useState<Collection | "media" | "users">(collections[0]);
+  const [active, setActive] = useState<Collection | "media" | "users" | "orders">(collections[0]);
   return (
     <div className="min-h-screen bg-surface">
       <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
