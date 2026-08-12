@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, ArrowRight, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { formatMoney } from "@/lib/shopify";
+import { CheckoutForm } from "@/components/shop/CheckoutForm";
 
 export function CartDrawer() {
   const [isOpen, setIsOpen] = useState(false);
-  const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const [checkingOut, setCheckingOut] = useState(false);
+  const { items, isLoading, isSyncing, updateQuantity, removeItem, syncCart } = useCartStore();
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const currency = items[0]?.price.currencyCode ?? "NGN";
   const totalPrice = items.reduce((sum, i) => sum + parseFloat(i.price.amount) * i.quantity, 0);
@@ -14,12 +16,10 @@ export function CartDrawer() {
   useEffect(() => { if (isOpen) void syncCart(); }, [isOpen, syncCart]);
 
   const handleCheckout = () => {
-    const checkoutUrl = getCheckoutUrl();
-    if (checkoutUrl) {
-      window.open(checkoutUrl, "_blank");
-      setIsOpen(false);
-    }
+    setIsOpen(false);
+    setCheckingOut(true);
   };
+
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -97,13 +97,17 @@ export function CartDrawer() {
                   disabled={items.length === 0 || isLoading || isSyncing}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-white shadow-glow disabled:opacity-60"
                 >
-                  {isLoading || isSyncing ? <Loader2 className="h-4 w-4 animate-spin" /> : <><ExternalLink className="h-4 w-4" /> Checkout securely</>}
+                  {isLoading || isSyncing ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Continue to checkout <ArrowRight className="h-4 w-4" /></>}
                 </button>
               </div>
             </>
           )}
         </div>
       </SheetContent>
+      {checkingOut && (
+        <CheckoutForm onClose={() => setCheckingOut(false)} onDone={() => setCheckingOut(false)} />
+      )}
     </Sheet>
   );
+
 }

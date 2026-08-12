@@ -1,9 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ChevronDown, Phone, ShieldCheck } from "lucide-react";
+import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import { useSite } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 import { CartDrawer } from "@/components/shop/CartDrawer";
+import logoUrl from "@/assets/ismart-logo.png";
+
 
 const mainNav = [
   { label: "Home", to: "/" },
@@ -18,22 +20,18 @@ const mainNav = [
 
 function Logo() {
   return (
-    <Link to="/" className="flex items-start gap-2.5 shrink-0 group">
-      <span className="grid h-10 w-10 place-items-center rounded-lg gradient-primary shadow-glow transition-transform group-hover:scale-105">
-        <ShieldCheck className="h-5 w-5 text-white" />
-      </span>
-      <span className="flex flex-col leading-tight">
-        <span className="font-display text-xl font-extrabold tracking-tight text-ink">
-          i<span className="text-primary">Smart</span>
-        </span>
-        <span className="text-[10px] font-bold uppercase tracking-wide text-primary">Digital Technology</span>
-        <span className="hidden xl:block text-[9px] text-ink-soft">
-          Smart Security. Intelligent Networking. Reliable Solutions.
-        </span>
-      </span>
+    <Link to="/" className="flex items-center shrink-0 group" aria-label="iSmart Digital Tech — home">
+      <img
+        src={logoUrl}
+        alt="iSmart Digital Tech Ltd — Smart Solutions, Digital Future"
+        width={200}
+        height={64}
+        className="h-12 w-auto md:h-14 transition-transform group-hover:scale-[1.03]"
+      />
     </Link>
   );
 }
+
 
 export function Header() {
   const site = useSite();

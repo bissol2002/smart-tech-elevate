@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
+
 import { syncAccess } from "@/lib/admin.functions";
 import { collections, emptyRow, iconNames, type Collection, type Field, type Row } from "@/lib/admin-collections";
 import { MediaLibrary, MediaPicker } from "@/components/admin/MediaLibrary";
 import { UsersPanel } from "@/components/admin/UsersPanel";
+import { OrdersPanel } from "@/components/admin/OrdersPanel";
+
 import { ProjectGallery } from "@/components/admin/ProjectGallery";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
 
@@ -82,7 +86,30 @@ function LoginCard({ onDone }: { onDone: () => void }) {
         <div className="grid h-11 w-11 place-items-center rounded-xl gradient-primary text-white"><ShieldCheck className="h-5 w-5" /></div>
         <h1 className="mt-5 font-display text-xl font-extrabold text-ink">Admin access</h1>
         <p className="mt-1 text-sm text-ink-soft">{mode === "in" ? "Sign in to manage site content." : "Create the admin account."}</p>
-        <input className="mt-6 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <button
+          type="button"
+          onClick={async () => {
+            setMsg(null);
+            const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}/admin` });
+            if (result.error) { setMsg("Google sign-in failed. Please try again."); return; }
+            if (result.redirected) return;
+            onDone();
+          }}
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-3 text-sm font-semibold text-ink hover:border-primary"
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.7v3h3.9c2.3-2.1 3.5-5.2 3.5-8.9Z" />
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3a7.2 7.2 0 0 1-10.7-3.8H1.4v3.1A12 12 0 0 0 12 24Z" />
+            <path fill="#FBBC05" d="M5.4 14.3a7.1 7.1 0 0 1 0-4.6V6.6H1.4a12 12 0 0 0 0 10.8l4-3.1Z" />
+            <path fill="#EA4335" d="M12 4.8c1.8 0 3.4.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.4 6.6l4 3.1A7.2 7.2 0 0 1 12 4.8Z" />
+          </svg>
+          Continue with Google
+        </button>
+        <div className="my-5 flex items-center gap-3 text-[11px] uppercase tracking-wide text-ink-soft">
+          <span className="h-px flex-1 bg-border" /> or email <span className="h-px flex-1 bg-border" />
+        </div>
+        <input className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+
         <input className="mt-3 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
         {msg && <p className="mt-3 text-sm text-destructive">{msg}</p>}
         <button disabled={busy} className="mt-5 w-full rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-white shadow-glow disabled:opacity-60">
@@ -127,7 +154,7 @@ function NoAccessCard({ email, onDone }: { email: string; onDone: () => void }) 
 }
 
 function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
-  const [active, setActive] = useState<Collection | "media" | "users">(collections[0]);
+  const [active, setActive] = useState<Collection | "media" | "users" | "orders">(collections[0]);
   return (
     <div className="min-h-screen bg-surface">
       <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
@@ -165,20 +192,29 @@ function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
           >
             Media library
           </button>
+          <button
+            onClick={() => setActive("orders")}
+            className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "orders" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+          >
+            Orders
+          </button>
           {isSuper && (
             <button
               onClick={() => setActive("users")}
               className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "users" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
             >
-              Users &amp; roles
+              Staff &amp; permissions
             </button>
           )}
         </nav>
         {active === "media"
           ? <MediaLibrary />
-          : active === "users"
-            ? <UsersPanel />
-            : <CollectionEditor key={active.key} collection={active} />}
+          : active === "orders"
+            ? <OrdersPanel />
+            : active === "users"
+              ? <UsersPanel />
+              : <CollectionEditor key={active.key} collection={active} />}
+
       </div>
     </div>
   );

@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import {
-  Mail, MapPin, Phone, Clock, Send, ShieldCheck, MessageCircle,
+  Mail, MapPin, Phone, Clock, Send, MessageCircle,
 } from "lucide-react";
 import { useSite, useSocialLinks, useWhatsAppNumbers } from "@/lib/cms";
 import { SocialIcons } from "@/components/site/SocialIcons";
+import logoUrl from "@/assets/ismart-logo.png";
+
 
 const company = [
   { label: "About Us", to: "/about" },
@@ -29,19 +31,17 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_0.7fr_1.1fr_1.2fr]">
           {/* Brand */}
           <div>
-            <Link to="/" className="flex items-start gap-2.5">
-              <span className="grid h-10 w-10 place-items-center rounded-lg gradient-primary shadow-glow">
-                <ShieldCheck className="h-5 w-5 text-white" />
-              </span>
-              <span className="leading-tight">
-                <span className="block font-display text-xl font-extrabold">
-                  i<span className="text-primary">Smart</span>
-                </span>
-                <span className="block text-[10px] font-bold uppercase tracking-wide text-primary">
-                  Digital Technology
-                </span>
-              </span>
+            <Link to="/" className="inline-flex items-center rounded-xl bg-white px-3 py-2 shadow-glow" aria-label="iSmart Digital Tech — home">
+              <img
+                src={logoUrl}
+                alt="iSmart Digital Tech Ltd — Smart Solutions, Digital Future"
+                width={180}
+                height={58}
+                loading="lazy"
+                className="h-11 w-auto"
+              />
             </Link>
+
             <p className="mt-5 max-w-xs text-xs leading-relaxed text-white/60">
               Smart Security. Intelligent Networking. Reliable Solutions.
             </p>
