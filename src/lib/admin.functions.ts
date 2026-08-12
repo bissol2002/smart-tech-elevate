@@ -29,7 +29,7 @@ export const syncAccess = createServerFn({ method: "POST" })
             ],
             { onConflict: "user_id,role", ignoreDuplicates: true },
           );
-        return { role: "super_admin" as const };
+        return { role: "super_admin" as const, permissions: [] as string[] };
       }
     }
 
@@ -38,11 +38,19 @@ export const syncAccess = createServerFn({ method: "POST" })
       .select("role")
       .eq("user_id", context.userId);
 
-    if (roles?.some((r) => r.role === "super_admin")) return { role: "super_admin" as const };
-    if (roles?.some((r) => r.role === "admin")) return { role: "admin" as const };
-    if (roles?.some((r) => r.role === "editor")) return { role: "editor" as const };
-    return { role: null };
+    const { data: perms } = await supabaseAdmin
+      .from("staff_permissions")
+      .select("permission")
+      .eq("user_id", context.userId);
+
+    const permissions = (perms ?? []).map((p) => p.permission as string);
+
+    if (roles?.some((r) => r.role === "super_admin")) return { role: "super_admin" as const, permissions };
+    if (roles?.some((r) => r.role === "admin")) return { role: "admin" as const, permissions };
+    if (roles?.some((r) => r.role === "editor")) return { role: "editor" as const, permissions };
+    return { role: null, permissions };
   });
+
 
 async function assertSuperAdmin(userId: string) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -63,14 +71,76 @@ export const listUsers = createServerFn({ method: "POST" })
     const { data, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
     if (error) throw error;
     const { data: roles } = await admin.from("user_roles").select("user_id, role");
+    const { data: perms } = await admin.from("staff_permissions").select("user_id, permission");
     return data.users.map((u) => ({
       id: u.id,
       email: u.email ?? "",
       created_at: u.created_at,
       last_sign_in_at: u.last_sign_in_at ?? null,
       roles: (roles ?? []).filter((r) => r.user_id === u.id).map((r) => r.role as string),
+      permissions: (perms ?? []).filter((p) => p.user_id === u.id).map((p) => p.permission as string),
     }));
   });
+
+/** Grant or revoke one granular permission for a staff account. */
+export const setUserPermission = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) =>
+    z.object({ userId: z.string().uuid(), permission: z.string().min(2).max(64), grant: z.boolean() }).parse(input),
+  )
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ data, context }) => {
+    const admin = await assertSuperAdmin(context.userId);
+    if (data.grant) {
+      const { error } = await admin
+        .from("staff_permissions")
+        .upsert(
+          { user_id: data.userId, permission: data.permission, granted_by: context.userId },
+          { onConflict: "user_id,permission", ignoreDuplicates: true },
+        );
+      if (error) throw error;
+    } else {
+      const { error } = await admin
+        .from("staff_permissions")
+        .delete()
+        .eq("user_id", data.userId)
+        .eq("permission", data.permission);
+      if (error) throw error;
+    }
+    await admin.from("audit_log").insert({
+      actor_id: context.userId,
+      actor_email: (context.claims?.email as string | undefined) ?? "",
+      action: data.grant ? "permission.grant" : "permission.revoke",
+      target: data.userId,
+      detail: { permission: data.permission },
+    });
+    return { ok: true };
+  });
+
+/** Grant or revoke many permissions at once (used by the "select all" control). */
+export const setUserPermissionSet = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) =>
+    z.object({ userId: z.string().uuid(), permissions: z.array(z.string().min(2).max(64)), grant: z.boolean() }).parse(input),
+  )
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ data, context }) => {
+    const admin = await assertSuperAdmin(context.userId);
+    if (data.grant) {
+      const { error } = await admin.from("staff_permissions").upsert(
+        data.permissions.map((permission) => ({ user_id: data.userId, permission, granted_by: context.userId })),
+        { onConflict: "user_id,permission", ignoreDuplicates: true },
+      );
+      if (error) throw error;
+    } else {
+      const { error } = await admin
+        .from("staff_permissions")
+        .delete()
+        .eq("user_id", data.userId)
+        .in("permission", data.permissions);
+      if (error) throw error;
+    }
+    return { ok: true };
+  });
+
 
 const roleSchema = z.object({
   userId: z.string().uuid(),

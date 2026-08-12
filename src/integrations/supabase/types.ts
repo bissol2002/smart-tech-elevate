@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_log: {
+        Row: {
+          action: string
+          actor_email: string
+          actor_id: string | null
+          created_at: string
+          detail: Json
+          id: string
+          target: string
+        }
+        Insert: {
+          action: string
+          actor_email?: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: string
+          target?: string
+        }
+        Update: {
+          action?: string
+          actor_email?: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: string
+          target?: string
+        }
+        Relationships: []
+      }
       brands: {
         Row: {
           category: string
@@ -118,37 +148,109 @@ export type Database = {
       }
       media_assets: {
         Row: {
+          category: string
           created_at: string
+          description: string
           folder: string
           id: string
+          is_active: boolean
+          media_type: string
           mime: string
           name: string
           path: string
           size: number
+          source_type: string
+          title: string
           updated_at: string
+          uploaded_by: string | null
+          uploaded_by_email: string
           url: string
         }
         Insert: {
+          category?: string
           created_at?: string
+          description?: string
           folder?: string
           id?: string
+          is_active?: boolean
+          media_type?: string
           mime?: string
           name: string
           path: string
           size?: number
+          source_type?: string
+          title?: string
           updated_at?: string
+          uploaded_by?: string | null
+          uploaded_by_email?: string
           url: string
         }
         Update: {
+          category?: string
           created_at?: string
+          description?: string
           folder?: string
           id?: string
+          is_active?: boolean
+          media_type?: string
           mime?: string
           name?: string
           path?: string
           size?: number
+          source_type?: string
+          title?: string
           updated_at?: string
+          uploaded_by?: string | null
+          uploaded_by_email?: string
           url?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          address: string
+          business_name: string
+          created_at: string
+          currency: string
+          customer_name: string
+          email: string
+          id: string
+          items: Json
+          note: string
+          phone: string
+          status: string
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          address?: string
+          business_name?: string
+          created_at?: string
+          currency?: string
+          customer_name: string
+          email?: string
+          id?: string
+          items?: Json
+          note?: string
+          phone: string
+          status?: string
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          business_name?: string
+          created_at?: string
+          currency?: string
+          customer_name?: string
+          email?: string
+          id?: string
+          items?: Json
+          note?: string
+          phone?: string
+          status?: string
+          total?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -477,6 +579,30 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_permissions: {
+        Row: {
+          created_at: string
+          granted_by: string | null
+          id: string
+          permission: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          permission: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          permission?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       super_admin_emails: {
         Row: {
           created_at: string
@@ -617,6 +743,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_perm: { Args: { _perm: string; _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
