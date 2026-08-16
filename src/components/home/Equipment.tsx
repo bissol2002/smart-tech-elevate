@@ -8,12 +8,12 @@ import dataCentre from "@/assets/data-centre.jpg";
 import fiberOptic from "@/assets/fiber-optic.jpg";
 
 const categories = [
-  { title: "Network Cameras", body: "IP cameras for every environment.", image: productCctv, q: "camera" },
-  { title: "PTZ Cameras", body: "Pan-tilt-zoom coverage for wide areas.", image: controlRoom, q: "ptz" },
-  { title: "NVR", body: "Network video recorders for 24/7 recording.", image: dataCentre, q: "nvr" },
-  { title: "Solar Cameras", body: "Off-grid surveillance powered by the sun.", image: fiberOptic, q: "solar" },
-  { title: "Access Control", body: "Biometric, RFID and smart access.", image: accessControl, q: "access" },
-  { title: "Networking", body: "Switches, routers and access points.", image: productNetwork, q: "network" },
+  { title: "Network Cameras", body: "IP cameras for every environment.", image: productCctv },
+  { title: "PTZ Cameras", body: "Pan-tilt-zoom coverage for wide areas.", image: controlRoom },
+  { title: "NVR", body: "Network video recorders for 24/7 recording.", image: dataCentre },
+  { title: "Solar Cameras", body: "Off-grid surveillance powered by the sun.", image: fiberOptic },
+  { title: "Access Control", body: "Biometric, RFID and smart access.", image: accessControl },
+  { title: "Networking", body: "Switches, routers and access points.", image: productNetwork },
 ];
 
 export function Equipment() {
@@ -35,7 +35,6 @@ export function Equipment() {
             <li key={c.title}>
               <Link
                 to="/products"
-                search={{ q: c.q } as never}
                 className="group flex h-full flex-col border border-border bg-card transition hover:border-primary/60 hover:shadow-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <div className="aspect-4/3 overflow-hidden bg-muted">
