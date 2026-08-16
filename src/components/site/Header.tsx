@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ChevronDown, Phone } from "lucide-react";
+import { Menu, X, Phone, ArrowRight } from "lucide-react";
 import { useSite } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 import { CartDrawer } from "@/components/shop/CartDrawer";
@@ -8,15 +8,16 @@ import logoUrl from "@/assets/ismart-logo.png";
 
 
 const mainNav = [
-  { label: "Home", to: "/" },
-  { label: "About Us", to: "/about" },
-  { label: "Solutions", to: "/solutions", caret: true },
+  { label: "Solutions", to: "/solutions" },
   { label: "Products", to: "/products" },
-  { label: "Brands", to: "/brands" },
+  { label: "Industries", to: "/industries" },
   { label: "Projects", to: "/projects" },
-  { label: "Why Choose Us", to: "/industries" },
+  { label: "Brands", to: "/brands" },
+  { label: "Resources", to: "/resources" },
+  { label: "Company", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
+
 
 function Logo() {
   return (
@@ -73,7 +74,6 @@ export function Header() {
                 )}
               >
                 {item.label}
-                {item.caret && <ChevronDown className="h-3.5 w-3.5" />}
                 {active && <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-primary" />}
               </Link>
             );
@@ -92,9 +92,9 @@ export function Header() {
           </a>
           <Link
             to="/quote"
-            className="hidden sm:inline-flex items-center rounded-md gradient-primary px-5 py-2.5 text-sm font-semibold text-white shadow-glow hover-lift"
+            className="btn-lime hidden sm:inline-flex px-5 py-2.5 text-[11px] uppercase"
           >
-            Request a Quote
+            Request Assessment <ArrowRight className="h-3.5 w-3.5" />
           </Link>
           <CartDrawer />
           <button
@@ -139,7 +139,7 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "px-4 py-3 rounded-md text-base font-medium transition-colors",
+                    "px-4 py-3.5 rounded-md text-base font-medium transition-colors",
                     active ? "text-primary bg-primary/10" : "text-ink hover:bg-muted",
                   )}
                 >
@@ -149,9 +149,9 @@ export function Header() {
             })}
             <Link
               to="/quote"
-              className="mt-3 inline-flex items-center justify-center rounded-md gradient-primary px-4 py-3 text-sm font-semibold text-white shadow-glow"
+              className="btn-lime mt-3 justify-center px-4 py-3.5 text-xs uppercase"
             >
-              Request a Quote
+              Request Assessment <ArrowRight className="h-4 w-4" />
             </Link>
             <a href={site.phoneLink} className="mt-2 text-center text-sm text-ink-soft py-2">
               {site.phone}

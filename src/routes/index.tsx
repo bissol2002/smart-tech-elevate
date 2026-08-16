@@ -1,22 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/home/Hero";
-import { FeatureStrip } from "@/components/home/FeatureStrip";
-import { Partners } from "@/components/home/Partners";
-import { Solutions } from "@/components/home/Solutions";
-import { StatsBand } from "@/components/home/StatsBand";
-import { Projects } from "@/components/home/Projects";
+import { BrandStrip } from "@/components/home/BrandStrip";
+import { ValueStrip } from "@/components/home/ValueStrip";
+import { IndustriesRow } from "@/components/home/IndustriesRow";
+import { Equipment } from "@/components/home/Equipment";
+import { ProjectsBand } from "@/components/home/ProjectsBand";
+import { WhyUs } from "@/components/home/WhyUs";
 import { CTASection } from "@/components/site/CTASection";
 
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "iSmart Digital Technology — CCTV, Networking & Smart Infrastructure in Nigeria" },
-      { name: "description", content: "Nigeria's trusted partner for AI CCTV, enterprise networking, access control, fiber optics and smart infrastructure. Major Tiandy distributor. Cisco, Ubiquiti and Bosch certified." },
-      { property: "og:title", content: "iSmart Digital Technology — Securing Businesses Through Intelligent Technology" },
-      { property: "og:description", content: "Professional CCTV surveillance, enterprise networking and smart infrastructure across Nigeria." },
+      { title: "iSmart Digital Tech — Security, CCTV & Networking Solutions in Nigeria" },
+      { name: "description", content: "iSmart Digital Tech designs, supplies, installs and maintains CCTV surveillance, access control, networking and fiber solutions for homes and businesses across Nigeria." },
+      { property: "og:title", content: "iSmart Digital Tech — Smart Solutions. Secure Future." },
+      { property: "og:description", content: "Intelligent security and networking solutions that protect people, property and performance." },
       { property: "og:url", content: "/" },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
@@ -27,13 +29,14 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <FeatureStrip />
-      <Partners />
-      <Solutions />
-      <StatsBand />
-      <Projects />
+      <BrandStrip />
+      <ValueStrip />
+      <IndustriesRow />
+      <Equipment />
+      <ProjectsBand />
+      <WhyUs />
       <CTASection />
-
     </>
   );
 }
+
