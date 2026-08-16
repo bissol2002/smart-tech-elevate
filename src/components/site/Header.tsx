@@ -8,15 +8,16 @@ import logoUrl from "@/assets/ismart-logo.png";
 
 
 const mainNav = [
-  { label: "Home", to: "/" },
-  { label: "About Us", to: "/about" },
-  { label: "Solutions", to: "/solutions", caret: true },
+  { label: "Solutions", to: "/solutions" },
   { label: "Products", to: "/products" },
-  { label: "Brands", to: "/brands" },
+  { label: "Industries", to: "/industries" },
   { label: "Projects", to: "/projects" },
-  { label: "Why Choose Us", to: "/industries" },
+  { label: "Brands", to: "/brands" },
+  { label: "Resources", to: "/resources" },
+  { label: "Company", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
+
 
 function Logo() {
   return (
