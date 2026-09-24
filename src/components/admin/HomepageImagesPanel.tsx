@@ -101,7 +101,7 @@ function ImageCard({ item, onChanged }: { item: Item; onChanged: () => void }) {
     if (pending && item.image_url && !confirm(`Replace the current ${item.category_name} image?`)) return;
     setBusy(true);
     try {
-      const patch: Record<string, unknown> = { category_name: name, description: desc, alt_text: alt, is_active: active };
+      const patch: { category_name: string; description: string; alt_text: string; is_active: boolean; image_url?: string; storage_path?: string; file_name?: string } = { category_name: name, description: desc, alt_text: alt, is_active: active };
       if (pending) {
         const { blob, ext, type } = await optimize(pending);
         const path = `${item.category_key}/${Date.now()}.${ext}`;
