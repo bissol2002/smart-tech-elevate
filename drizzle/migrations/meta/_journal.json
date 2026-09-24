@@ -8,6 +8,13 @@
       "when": 1790245534751,
       "tag": "0000_homepage_images",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790245619796,
+      "tag": "0001_homepage_images_public_read_fix",
+      "breakpoints": true
     }
   ]
 }
