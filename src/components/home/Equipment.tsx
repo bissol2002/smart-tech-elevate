@@ -7,16 +7,27 @@ import controlRoom from "@/assets/control-room.jpg";
 import dataCentre from "@/assets/data-centre.jpg";
 import fiberOptic from "@/assets/fiber-optic.jpg";
 
-const categories = [
-  { title: "Network Cameras", body: "IP cameras for every environment.", image: productCctv },
-  { title: "PTZ Cameras", body: "Pan-tilt-zoom coverage for wide areas.", image: controlRoom },
-  { title: "NVR", body: "Network video recorders for 24/7 recording.", image: dataCentre },
-  { title: "Solar Cameras", body: "Off-grid surveillance powered by the sun.", image: fiberOptic },
-  { title: "Access Control", body: "Biometric, RFID and smart access.", image: accessControl },
-  { title: "Networking", body: "Switches, routers and access points.", image: productNetwork },
-];
+import { useCms } from "@/lib/cms";
+
+// Fallback artwork used only until a Super Admin uploads an image for a category.
+const fallbackImages: Record<string, string> = {
+  "network-cameras": productCctv,
+  "ptz-cameras": controlRoom,
+  nvr: dataCentre,
+  "solar-cameras": fiberOptic,
+  "access-control": accessControl,
+  networking: productNetwork,
+};
 
 export function Equipment() {
+  const { homepageImages } = useCms();
+  const categories = (homepageImages ?? []).map((h) => ({
+    key: h.category_key,
+    title: h.category_name,
+    body: h.description,
+    alt: h.alt_text || h.category_name,
+    image: h.image_url || fallbackImages[h.category_key] || productCctv,
+  }));
   return (
     <section aria-labelledby="equipment-heading" className="pb-14 md:pb-20">
       <div className="container-x">

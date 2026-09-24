@@ -42,7 +42,7 @@ export async function loadCmsContent(): Promise<CmsContent> {
   const sb = publicClient();
   const [
     settings, socialLinks, whatsappNumbers, solutions, industries, brands,
-    projectCategories, projects, projectImages, testimonials, team, faqs, posts,
+    projectCategories, projects, projectImages, testimonials, team, faqs, posts, homepageImages,
   ] = await Promise.all([
     sb.from("site_settings").select("*").eq("id", 1).maybeSingle(),
     sb.from("social_links").select("*").order("sort"),
@@ -57,6 +57,7 @@ export async function loadCmsContent(): Promise<CmsContent> {
     sb.from("team").select("*").order("sort"),
     sb.from("faqs").select("*").order("sort"),
     sb.from("posts").select("*").eq("published", true).order("sort"),
+    sb.from("homepage_images").select("id,category_key,category_name,description,image_url,alt_text,sort").eq("is_active", true).order("sort"),
   ]);
 
   const s = settings.data;
@@ -105,5 +106,6 @@ export async function loadCmsContent(): Promise<CmsContent> {
     team: (team.data ?? []) as CmsContent["team"],
     faqs: (faqs.data ?? []) as CmsContent["faqs"],
     posts: (posts.data ?? []) as CmsContent["posts"],
+    homepageImages: (homepageImages.data ?? []) as CmsContent["homepageImages"],
   };
 }
