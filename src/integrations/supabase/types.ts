@@ -110,6 +110,54 @@ export type Database = {
         }
         Relationships: []
       }
+      homepage_images: {
+        Row: {
+          alt_text: string
+          category_key: string
+          category_name: string
+          created_at: string
+          description: string
+          file_name: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          sort: number
+          storage_path: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          alt_text?: string
+          category_key: string
+          category_name: string
+          created_at?: string
+          description?: string
+          file_name?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          sort?: number
+          storage_path?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          alt_text?: string
+          category_key?: string
+          category_name?: string
+          created_at?: string
+          description?: string
+          file_name?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          sort?: number
+          storage_path?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       industries: {
         Row: {
           accent: string
