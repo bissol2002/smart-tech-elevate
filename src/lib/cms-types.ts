@@ -150,6 +150,16 @@ export interface PostRow {
   sort: number;
 }
 
+export interface HomepageImageRow {
+  id: string;
+  category_key: string;
+  category_name: string;
+  description: string;
+  image_url: string | null;
+  alt_text: string;
+  sort: number;
+}
+
 export interface CmsContent {
   site: SiteSettings;
   socialLinks: SocialLinkRow[];
@@ -163,4 +173,5 @@ export interface CmsContent {
   team: TeamRow[];
   faqs: FaqRow[];
   posts: PostRow[];
+  homepageImages: HomepageImageRow[];
 }
