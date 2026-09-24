@@ -21,7 +21,7 @@ const fallbackImages: Record<string, string> = {
 
 export function Equipment() {
   const { homepageImages } = useCms();
-  const categories = homepageImages.map((h) => ({
+  const categories = (homepageImages ?? []).map((h) => ({
     key: h.category_key,
     title: h.category_name,
     body: h.description,
