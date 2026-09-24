@@ -8,6 +8,7 @@ import { collections, emptyRow, iconNames, type Collection, type Field, type Row
 import { MediaLibrary, MediaPicker } from "@/components/admin/MediaLibrary";
 import { UsersPanel } from "@/components/admin/UsersPanel";
 import { OrdersPanel } from "@/components/admin/OrdersPanel";
+import { HomepageImagesPanel } from "@/components/admin/HomepageImagesPanel";
 
 import { ProjectGallery } from "@/components/admin/ProjectGallery";
 import { Loader2, LogOut, Plus, Save, Trash2, ShieldCheck } from "lucide-react";
@@ -154,7 +155,8 @@ function NoAccessCard({ email, onDone }: { email: string; onDone: () => void }) 
 }
 
 function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
-  const [active, setActive] = useState<Collection | "media" | "users" | "orders">(collections[0]);
+  const [active, setActive] = useState<Collection | "media" | "users" | "orders" | "homepage">(collections[0]);
+  const safeActive = active === "homepage" && !isSuper ? collections[0] : active;
   return (
     <div className="min-h-screen bg-surface">
       <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
@@ -200,6 +202,14 @@ function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
           </button>
           {isSuper && (
             <button
+              onClick={() => setActive("homepage")}
+              className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "homepage" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
+            >
+              Homepage Images
+            </button>
+          )}
+          {isSuper && (
+            <button
               onClick={() => setActive("users")}
               className={`rounded-xl px-4 py-2.5 text-left text-sm font-semibold transition ${active === "users" ? "gradient-primary text-white shadow-glow" : "border border-border bg-card text-ink hover:border-primary"}`}
             >
@@ -207,13 +217,15 @@ function Dashboard({ email, isSuper }: { email: string; isSuper: boolean }) {
             </button>
           )}
         </nav>
-        {active === "media"
+        {safeActive === "homepage"
+          ? <HomepageImagesPanel />
+          : active === "media"
           ? <MediaLibrary />
           : active === "orders"
             ? <OrdersPanel />
             : active === "users"
               ? <UsersPanel />
-              : <CollectionEditor key={active.key} collection={active} />}
+              : typeof safeActive !== "string" ? <CollectionEditor key={safeActive.key} collection={safeActive} /> : null}
 
       </div>
     </div>
