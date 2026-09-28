@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Loader2 } from "lucide-react";
+import { Search } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
 import { ProductCard } from "@/components/shop/ProductCard";
@@ -36,14 +36,15 @@ function ProductsPage() {
     staleTime: 60_000,
   });
 
+  const deferredSearch = useDeferredValue(search);
   const filtered = useMemo(() => {
     const list = products ?? [];
-    const q = search.trim().toLowerCase();
+    const q = deferredSearch.trim().toLowerCase();
     if (!q) return list;
     return list.filter(
       (p) => p.node.title.toLowerCase().includes(q) || p.node.description.toLowerCase().includes(q),
     );
-  }, [products, search]);
+  }, [products, deferredSearch]);
 
   return (
     <>
@@ -73,8 +74,13 @@ function ProductsPage() {
           </div>
 
           {isLoading ? (
-            <div className="grid place-items-center py-20 text-ink-soft">
-              <Loader2 className="h-6 w-6 animate-spin" />
+            <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4" aria-busy="true" aria-label="Loading products">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="overflow-hidden rounded-2xl border border-border bg-card">
+                  <div className="aspect-square animate-pulse bg-muted" />
+                  <div className="space-y-2 p-4"><div className="h-3 w-3/4 animate-pulse rounded bg-muted" /><div className="h-3 w-1/2 animate-pulse rounded bg-muted" /></div>
+                </div>
+              ))}
             </div>
           ) : isError ? (
             <p className="py-20 text-center text-sm text-ink-soft">

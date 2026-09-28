@@ -5,12 +5,12 @@ import { CTASection } from "@/components/site/CTASection";
 import { useCms } from "@/lib/cms";
 import type { ProjectRow } from "@/lib/cms-types";
 import { MapPin, X, ChevronLeft, ChevronRight, CalendarDays } from "lucide-react";
-import controlRoom from "@/assets/control-room.jpg";
-import productCctv from "@/assets/product-cctv.jpg";
-import productNetwork from "@/assets/product-network.jpg";
-import accessControl from "@/assets/access-control.jpg";
-import fiber from "@/assets/fiber-optic.jpg";
-import dataCentre from "@/assets/data-centre.jpg";
+import controlRoom from "@/assets/control-room.webp";
+import productCctv from "@/assets/product-cctv.webp";
+import productNetwork from "@/assets/product-network.webp";
+import accessControl from "@/assets/access-control.webp";
+import fiber from "@/assets/fiber-optic.webp";
+import dataCentre from "@/assets/data-centre.webp";
 
 const imageMap: Record<string, string> = { controlRoom, productCctv, productNetwork, accessControl, fiber, dataCentre };
 

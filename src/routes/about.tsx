@@ -4,7 +4,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { Counter } from "@/components/site/Counter";
 import { useCms } from "@/lib/cms";
 import { Target, Eye, Sparkles, Users, ShieldCheck, Award } from "lucide-react";
-import dataCentre from "@/assets/data-centre.jpg";
+import dataCentre from "@/assets/data-centre.webp";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -55,7 +55,7 @@ function AboutPage() {
           </div>
           <div className="relative">
             <div className="absolute -inset-3 gradient-primary rounded-3xl opacity-30 blur-2xl" />
-            <img src={dataCentre} alt="Modern data centre" className="relative rounded-3xl shadow-elevated" loading="lazy" />
+            <img src={dataCentre} alt="Modern data centre" className="relative rounded-3xl shadow-elevated" loading="lazy" decoding="async" width={1280} height={800} />
           </div>
         </div>
       </section>

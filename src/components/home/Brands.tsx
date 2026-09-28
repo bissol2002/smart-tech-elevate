@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useCms } from "@/lib/cms";
-import productCctv from "@/assets/product-cctv.jpg";
-import productNetwork from "@/assets/product-network.jpg";
-import accessControl from "@/assets/access-control.jpg";
-import fiber from "@/assets/fiber-optic.jpg";
-import dataCentre from "@/assets/data-centre.jpg";
-import controlRoom from "@/assets/control-room.jpg";
+import productCctv from "@/assets/product-cctv.webp";
+import productNetwork from "@/assets/product-network.webp";
+import accessControl from "@/assets/access-control.webp";
+import fiber from "@/assets/fiber-optic.webp";
+import dataCentre from "@/assets/data-centre.webp";
+import controlRoom from "@/assets/control-room.webp";
 
 const brandImages: Record<string, string> = {
   tiandy: productCctv,

@@ -4,7 +4,7 @@ import { Menu, X, Phone, ArrowRight } from "lucide-react";
 import { useSite } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 import { CartDrawer } from "@/components/shop/CartDrawer";
-import logoUrl from "@/assets/ismart-logo.png";
+import logoUrl from "@/assets/ismart-logo.webp";
 
 
 const mainNav = [

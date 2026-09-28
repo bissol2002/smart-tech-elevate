@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import productCctv from "@/assets/product-cctv.jpg";
-import productNetwork from "@/assets/product-network.jpg";
-import accessControl from "@/assets/access-control.jpg";
-import fiberOptic from "@/assets/fiber-optic.jpg";
-import controlRoom from "@/assets/control-room.jpg";
-import dataCentre from "@/assets/data-centre.jpg";
+import productCctv from "@/assets/product-cctv.webp";
+import productNetwork from "@/assets/product-network.webp";
+import accessControl from "@/assets/access-control.webp";
+import fiberOptic from "@/assets/fiber-optic.webp";
+import controlRoom from "@/assets/control-room.webp";
+import dataCentre from "@/assets/data-centre.webp";
 
 const cards = [
   { title: "CCTV Surveillance", body: "High-definition IP cameras for complete security monitoring.", image: productCctv },

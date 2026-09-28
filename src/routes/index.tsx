@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import teamHero from "@/assets/team-hero.webp.asset.json";
 import { Hero } from "@/components/home/Hero";
 import { BrandStrip } from "@/components/home/BrandStrip";
 import { ValueStrip } from "@/components/home/ValueStrip";
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "/" }, { rel: "preload", as: "image", href: teamHero.url, fetchPriority: "high" }],
   }),
   component: HomePage,
 });
