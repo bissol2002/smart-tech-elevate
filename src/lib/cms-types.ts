@@ -152,6 +152,7 @@ export interface PostRow {
 
 export interface HomepageImageRow {
   id: string;
+  section: string;
   category_key: string;
   category_name: string;
   description: string;

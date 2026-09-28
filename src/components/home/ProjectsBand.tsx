@@ -4,6 +4,13 @@ import { useCms } from "@/lib/cms";
 import controlRoom from "@/assets/control-room.jpg";
 import dataCentre from "@/assets/data-centre.jpg";
 import fiberOptic from "@/assets/fiber-optic.jpg";
+import productCctv from "@/assets/product-cctv.jpg";
+import productNetwork from "@/assets/product-network.jpg";
+import accessControl from "@/assets/access-control.jpg";
+
+// Existing site artwork keyed by the project's legacy image key.
+const keyed: Record<string, string> = { controlRoom, dataCentre, fiber: fiberOptic, productCctv, productNetwork, accessControl };
+const isUrl = (v?: string | null) => !!v && /^(https?:)?\/\//.test(v);
 
 const fallbackImages = [controlRoom, dataCentre, fiberOptic];
 
@@ -42,7 +49,7 @@ export function ProjectsBand() {
                   className="group relative block h-52 overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
                 >
                   <img
-                    src={p.image || fallbackImages[i % fallbackImages.length]}
+                    src={(isUrl(p.cover_url) && p.cover_url) || p.images?.[0]?.url || (isUrl(p.image) ? p.image : keyed[p.image]) || fallbackImages[i % fallbackImages.length]}
                     alt=""
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"

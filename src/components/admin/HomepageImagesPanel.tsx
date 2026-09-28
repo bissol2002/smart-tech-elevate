@@ -13,6 +13,7 @@ type Item = {
   file_name: string | null;
   alt_text: string;
   is_active: boolean;
+  section: string;
   sort: number;
   updated_at: string;
 };
@@ -52,7 +53,7 @@ export function HomepageImagesPanel() {
     if (!name) return;
     const key = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     const { error } = await supabase.from("homepage_images").insert({
-      category_key: key, category_name: name, alt_text: name, sort: (items?.length ?? 0) + 1,
+      section: "equipment", category_key: key, category_name: name, alt_text: name, sort: (items?.length ?? 0) + 1,
     });
     if (error) toast.error(error.message); else { toast.success("Category added"); void load(); }
   }
@@ -64,15 +65,24 @@ export function HomepageImagesPanel() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-ink">Homepage Images</h1>
-          <p className="mt-1 text-sm text-ink-soft">Images shown under “Professional-grade equipment”. Super Admins only.</p>
+          <p className="mt-1 text-sm text-ink-soft">Images shown in the homepage equipment and environment sections. Super Admins only.</p>
         </div>
         <button onClick={addCategory} className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-5 py-2.5 text-xs font-semibold text-white shadow-glow">
           <Plus className="h-3.5 w-3.5" /> Add category
         </button>
       </div>
-      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {items.map((it) => <ImageCard key={it.id} item={it} onChanged={load} />)}
-      </div>
+      {[
+        { id: "equipment", title: "Professional-grade equipment" },
+        { id: "environments", title: "Solutions designed for every environment" },
+      ].map((sec) => (
+        <section key={sec.id} className="mt-8">
+          <h2 className="font-display text-lg font-bold text-ink">{sec.title}</h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {items.filter((it) => (it.section ?? "equipment") === sec.id).map((it) => <ImageCard key={it.id} item={it} onChanged={load} />)}
+          </div>
+        </section>
+      ))}
+      <p className="mt-8 text-xs text-ink-soft">“Real projects, Real impact” thumbnails come automatically from each project's cover image — change them in the Projects tab.</p>
     </div>
   );
 }
