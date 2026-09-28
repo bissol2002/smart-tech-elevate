@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Cctv, Fingerprint, Network, Headset, BadgeCheck } from "lucide-react";
-import teamHero from "@/assets/team-hero.png.asset.json";
+import teamHero from "@/assets/team-hero.webp.asset.json";
 
 const capabilities = [
   { icon: Cctv, label: "CCTV &\nSurveillance" },
@@ -16,6 +16,7 @@ export function Hero() {
         src={teamHero.url}
         alt="The iSmart Digital Tech team holding Tiandy cameras and network video recorders"
         fetchPriority="high"
+        decoding="async"
         width={1600}
         height={1000}
         className="absolute inset-0 h-full w-full object-cover object-[72%_center] opacity-90 md:opacity-100"
