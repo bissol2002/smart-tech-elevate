@@ -6,17 +6,26 @@ import accessControl from "@/assets/access-control.jpg";
 import fiberOptic from "@/assets/fiber-optic.jpg";
 import productCctv from "@/assets/product-cctv.jpg";
 import productNetwork from "@/assets/product-network.jpg";
+import { useCms } from "@/lib/cms";
 
-const industries = [
-  { title: "Residential", sub: "Homes & Estates", image: productCctv },
-  { title: "Commercial", sub: "Offices & Buildings", image: dataCentre },
-  { title: "Education", sub: "Schools & Campuses", image: accessControl },
-  { title: "Healthcare", sub: "Hospitals & Clinics", image: controlRoom },
-  { title: "Industrial", sub: "Factories & Plants", image: fiberOptic },
-  { title: "Government", sub: "Public Institutions", image: productNetwork },
+const defaults = [
+  { key: "env-residential", title: "Residential", sub: "Homes & Estates", image: productCctv },
+  { key: "env-commercial", title: "Commercial", sub: "Offices & Buildings", image: dataCentre },
+  { key: "env-education", title: "Education", sub: "Schools & Campuses", image: accessControl },
+  { key: "env-healthcare", title: "Healthcare", sub: "Hospitals & Clinics", image: controlRoom },
+  { key: "env-industrial", title: "Industrial", sub: "Factories & Plants", image: fiberOptic },
+  { key: "env-government", title: "Government", sub: "Public Institutions", image: productNetwork },
 ];
 
 export function IndustriesRow() {
+  const { homepageImages } = useCms();
+  const rows = (homepageImages ?? []).filter((h) => h.section === "environments");
+  const industries = rows.length
+    ? rows.map((h) => {
+        const d = defaults.find((x) => x.key === h.category_key);
+        return { title: h.category_name, sub: h.description, image: h.image_url || d?.image || productCctv };
+      })
+    : defaults;
   return (
     <section aria-labelledby="industries-heading" className="pb-14 md:pb-20">
       <div className="container-x grid gap-8 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)] lg:items-center">

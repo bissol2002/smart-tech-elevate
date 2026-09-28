@@ -57,7 +57,7 @@ export async function loadCmsContent(): Promise<CmsContent> {
     sb.from("team").select("*").order("sort"),
     sb.from("faqs").select("*").order("sort"),
     sb.from("posts").select("*").eq("published", true).order("sort"),
-    sb.from("homepage_images").select("id,category_key,category_name,description,image_url,alt_text,sort").eq("is_active", true).order("sort"),
+    sb.from("homepage_images").select("id,section,category_key,category_name,description,image_url,alt_text,sort").eq("is_active", true).order("sort"),
   ]);
 
   const s = settings.data;
