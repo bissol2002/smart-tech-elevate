@@ -55,7 +55,7 @@ function AboutPage() {
           </div>
           <div className="relative">
             <div className="absolute -inset-3 gradient-primary rounded-3xl opacity-30 blur-2xl" />
-            <img src={dataCentre} alt="Modern data centre" className="relative rounded-3xl shadow-elevated" loading="lazy" />
+            <img src={dataCentre} alt="Modern data centre" className="relative rounded-3xl shadow-elevated" loading="lazy" decoding="async" width={1280} height={800} />
           </div>
         </div>
       </section>

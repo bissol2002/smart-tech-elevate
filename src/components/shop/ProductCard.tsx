@@ -19,6 +19,9 @@ export function ProductCard({ product }: { product: ShopifyProduct }) {
             src={image.url}
             alt={image.altText ?? p.title}
             loading="lazy"
+            decoding="async"
+            width={400}
+            height={400}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

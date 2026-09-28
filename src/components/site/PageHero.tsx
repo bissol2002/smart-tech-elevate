@@ -16,6 +16,9 @@ export function PageHero({ eyebrow, title, subtitle, crumbs = [] }: PageHeroProp
         src={bgAbstract}
         alt=""
         aria-hidden
+        decoding="async"
+        width={1600}
+        height={900}
         className="absolute inset-0 h-full w-full object-cover opacity-25"
       />
       <div className="absolute inset-0 gradient-dark opacity-90" aria-hidden />

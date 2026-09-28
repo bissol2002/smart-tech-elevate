@@ -13,7 +13,7 @@ const features = [
 export function WhyUs() {
   return (
     <section className="relative isolate overflow-hidden bg-night text-white py-20 md:py-28">
-      <img src={controlRoom} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover opacity-20" />
+      <img src={controlRoom} alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-20" />
       <div className="absolute inset-0 gradient-dark opacity-90" aria-hidden />
       <div className="absolute inset-0 gradient-mesh opacity-60" aria-hidden />
 
