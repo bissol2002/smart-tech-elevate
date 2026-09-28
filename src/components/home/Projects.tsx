@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import controlRoom from "@/assets/control-room.jpg";
-import productNetwork from "@/assets/product-network.jpg";
-import accessControl from "@/assets/access-control.jpg";
-import productCctv from "@/assets/product-cctv.jpg";
-import fiberOptic from "@/assets/fiber-optic.jpg";
-import dataCentre from "@/assets/data-centre.jpg";
+import controlRoom from "@/assets/control-room.webp";
+import productNetwork from "@/assets/product-network.webp";
+import accessControl from "@/assets/access-control.webp";
+import productCctv from "@/assets/product-cctv.webp";
+import fiberOptic from "@/assets/fiber-optic.webp";
+import dataCentre from "@/assets/data-centre.webp";
 
 const items = [
   { title: "Corporate CCTV Installation", image: controlRoom },

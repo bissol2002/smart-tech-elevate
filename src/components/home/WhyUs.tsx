@@ -1,5 +1,5 @@
 import { BadgeCheck, Award, ShieldCheck, Zap, Headphones, Wallet } from "lucide-react";
-import controlRoom from "@/assets/control-room.jpg";
+import controlRoom from "@/assets/control-room.webp";
 
 const features = [
   { icon: BadgeCheck, title: "Professional Engineering", body: "Systems designed and installed by trained technical staff." },

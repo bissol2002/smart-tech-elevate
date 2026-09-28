@@ -4,7 +4,7 @@ import { CTASection } from "@/components/site/CTASection";
 import { Counter } from "@/components/site/Counter";
 import { useCms } from "@/lib/cms";
 import { Target, Eye, Sparkles, Users, ShieldCheck, Award } from "lucide-react";
-import dataCentre from "@/assets/data-centre.jpg";
+import dataCentre from "@/assets/data-centre.webp";
 
 export const Route = createFileRoute("/about")({
   head: () => ({

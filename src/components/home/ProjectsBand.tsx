@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useCms } from "@/lib/cms";
-import controlRoom from "@/assets/control-room.jpg";
-import dataCentre from "@/assets/data-centre.jpg";
-import fiberOptic from "@/assets/fiber-optic.jpg";
-import productCctv from "@/assets/product-cctv.jpg";
-import productNetwork from "@/assets/product-network.jpg";
-import accessControl from "@/assets/access-control.jpg";
+import controlRoom from "@/assets/control-room.webp";
+import dataCentre from "@/assets/data-centre.webp";
+import fiberOptic from "@/assets/fiber-optic.webp";
+import productCctv from "@/assets/product-cctv.webp";
+import productNetwork from "@/assets/product-network.webp";
+import accessControl from "@/assets/access-control.webp";
 
 // Existing site artwork keyed by the project's legacy image key.
 const keyed: Record<string, string> = { controlRoom, dataCentre, fiber: fiberOptic, productCctv, productNetwork, accessControl };

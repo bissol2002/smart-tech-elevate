@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, Home } from "lucide-react";
-import bgAbstract from "@/assets/bg-abstract.jpg";
+import bgAbstract from "@/assets/bg-abstract.webp";
 
 interface PageHeroProps {
   eyebrow?: string;

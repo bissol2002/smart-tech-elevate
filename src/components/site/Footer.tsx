@@ -4,7 +4,7 @@ import {
 } from "lucide-react";
 import { useSite, useSocialLinks, useWhatsAppNumbers } from "@/lib/cms";
 import { SocialIcons } from "@/components/site/SocialIcons";
-import logoUrl from "@/assets/ismart-logo.png";
+import logoUrl from "@/assets/ismart-logo.webp";
 
 
 const company = [
