@@ -1,9 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, Phone, ArrowRight } from "lucide-react";
+import { Menu, X, Phone, ArrowRight, Sun, Moon } from "lucide-react";
 import { useSite } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 import { CartDrawer } from "@/components/shop/CartDrawer";
+import { Button } from "@/components/ui/button";
 import logoUrl from "@/assets/ismart-logo.webp";
 
 
@@ -39,6 +40,18 @@ export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !document.documentElement.classList.contains("dark");
+    document.documentElement.classList.toggle("dark", next);
+    setDark(next);
+    try { localStorage.setItem("ismart-theme", next ? "dark" : "light"); } catch { /* Storage can be unavailable. */ }
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -97,13 +110,31 @@ export function Header() {
             Request Assessment <ArrowRight className="h-3.5 w-3.5" />
           </Link>
           <CartDrawer />
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            role="switch"
+            aria-checked={dark}
+            aria-label="Dark mode"
+            title={dark ? "Switch to light mode" : "Switch to dark mode"}
+            onClick={toggleTheme}
+            className="h-10 w-[62px] shrink-0 rounded-full border border-border bg-muted p-1 hover:bg-accent"
+          >
+            <span className="relative flex h-7 w-full items-center justify-between text-ink-soft">
+              <Sun className="relative z-10 h-3.5 w-3.5 ml-1" />
+              <Moon className="relative z-10 h-3.5 w-3.5 mr-1" />
+              <span className={cn("absolute top-0 h-7 w-7 rounded-full bg-background shadow-soft transition-transform", dark ? "translate-x-[26px]" : "translate-x-0")} />
+            </span>
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
             aria-label="Open menu"
             onClick={() => setOpen(true)}
             className="lg:hidden grid h-10 w-10 place-items-center rounded-md text-ink hover:bg-muted"
           >
             <Menu className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -123,13 +154,15 @@ export function Header() {
         >
           <div className="flex items-center justify-between p-5 border-b border-border">
             <span className="font-display text-lg font-bold">Menu</span>
-            <button
+            <Button
+              type="button"
+              variant="ghost"
               aria-label="Close menu"
               onClick={() => setOpen(false)}
               className="grid h-10 w-10 place-items-center rounded-md hover:bg-muted"
             >
               <X className="h-5 w-5" />
-            </button>
+            </Button>
           </div>
           <nav className="p-3 flex flex-col">
             {mainNav.map((item) => {
