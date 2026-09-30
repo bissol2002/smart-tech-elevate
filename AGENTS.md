@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the public site's theme preference in `ismart-theme` local storage and apply the `dark` class before styles render; this prevents a light-theme flash on revisits.

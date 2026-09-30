@@ -19,6 +19,10 @@ export const Route = createFileRoute("/admin")({
     meta: [
       { title: "Admin — iSmart Digital Technology" },
       { name: "description", content: "Private content management panel." },
+      { property: "og:title", content: "Admin | iSmart Digital Technology" },
+      { property: "og:description", content: "Private content management panel for iSmart Digital Technology." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
